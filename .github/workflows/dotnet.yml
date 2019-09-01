@@ -35,4 +35,4 @@ jobs:
       with:
         name: Release
         path: publish
-      if: success() && (github.event_name != 'pull_request')
+      if: (job.steps.build_step.status == success()) && (github.event_name != 'pull_request')
