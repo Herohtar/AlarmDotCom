@@ -36,7 +36,15 @@ jobs:
         path: publish
       if: success() && (github.event_name != 'pull_request')
 
-    - name: Test Step
+    - name: Test Step 1
       run: echo %TEST_VALUE%
       env:
         TEST_VALUE: ${{ github.ref }}
+
+    - name: Test Step 2
+      run: echo Partial ref matches!
+      if: startsWith(github.ref, 'v')
+
+    - name: Test Step 3
+      run: echo Full ref matches!
+      if: startsWith(github.ref, 'refs/tags/v')
