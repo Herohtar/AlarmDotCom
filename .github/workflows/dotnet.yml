@@ -27,6 +27,7 @@ jobs:
         dotnet-version: 3.0.100-preview8-013656
 
     - name: Restore, Build, Pack
+      id: build_step
       run: dotnet pack -c Release -o publish
 
     - name: Upload Artifacts
