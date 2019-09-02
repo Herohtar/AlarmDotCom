@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>AlarmDotCom</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Herohtar</Authors>
     <Description>Custom WebClient for logging in to your Alarm.com account and accessing temperature sensor data.</Description>
     <Copyright>Copyright (c) 2019 Herohtar</Copyright>
