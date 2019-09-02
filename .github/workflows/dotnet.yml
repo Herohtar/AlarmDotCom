@@ -44,3 +44,12 @@ jobs:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       #if: (job.steps.build_step.status == success()) && (github.event_name != 'pull_request') && startsWith(github.ref, 'refs/tags/v')
       if: success() && (github.event_name != 'pull_request') && startsWith(github.ref, 'refs/tags/v')
+
+    - name: Draft Release
+      uses: docker://softprops/action-gh-release
+      with:
+        draft: true
+        files: publish\*.nupkg
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: success() && (github.event_name != 'pull_request') && startsWith(github.ref, 'refs/tags/v')
