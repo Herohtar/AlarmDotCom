@@ -35,10 +35,10 @@ jobs:
       with:
         name: Release
         path: publish
-      if: (job.steps.build_step.status == success()) && (github.event_name != 'pull_request')
+      if: (build.steps.build_step.status == success()) && (github.event_name != 'pull_request')
 
     - name: NuGet Push
       run: dotnet nuget push .\publish\*.nupkg -s https://api.nuget.org/v3/index.json -k %NUGET_API_KEY%
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      if: (job.steps.build_step.status == success()) && (github.event_name != 'pull_request') && startsWith(github.ref, 'refs/tags/v')
+      if: (build.steps.build_step.status == success()) && (github.event_name != 'pull_request') && startsWith(github.ref, 'refs/tags/v')
