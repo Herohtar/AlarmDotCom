@@ -7,7 +7,7 @@
     <Description>Custom WebClient for logging in to your Alarm.com account and accessing temperature sensor data.</Description>
     <Copyright>Copyright (c) 2019 Herohtar</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>Alarm.com;Login;Temperature</PackageTags>
+    <PackageTags>Alarm.com;Login;Temperature;Home Automation;Smart Home</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <RepositoryUrl>https://github.com/Herohtar/AlarmDotCom</RepositoryUrl>
