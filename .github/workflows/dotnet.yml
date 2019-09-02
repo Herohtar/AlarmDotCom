@@ -35,10 +35,12 @@ jobs:
         echo %TEST_VALUE1%
         echo %TEST_VALUE2%
         echo %TEST_VALUE3%
+        echo %TEST_VALUE4%
       env:
-        TEST_VALUE1: ${{ job.steps.build_step.status }}
-        TEST_VALUE2: ${{ job.steps.build_step }}
-        TEST_VALUE3: ${{ job.steps }}
+        TEST_VALUE1: ${{ toJSON(job.steps.build_step.status) }}
+        TEST_VALUE2: ${{ toJSON(job.steps.build_step) }}
+        TEST_VALUE3: ${{ toJSON(job.steps) }}
+        TEST_VALUE4: ${{ toJSON(job) }}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v1
