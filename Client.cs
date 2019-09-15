@@ -46,52 +46,65 @@ namespace AlarmDotCom
           : this(username, password, new CookieContainer(), string.Empty)
         { }
 
-        public void Login()
+        public bool Login()
         {
-            var loginData = new NameValueCollection();
-            var pageHtml = new HtmlDocument();
-            HttpWebRequest request;
-            WebResponse response;
+            var success = false;
+            try
+            {
+                var loginData = new NameValueCollection();
+                var pageHtml = new HtmlDocument();
+                HttpWebRequest request;
+                WebResponse response;
 
-            // Load the first page in order to pull the ASP states/keys so our login request looks legit
-            request = (HttpWebRequest)WebRequest.Create(initialPageUrl);
-            request.Method = "GET";
-            request.UserAgent = userAgent;
-            response = request.GetResponse();
+                // Load the first page in order to pull the ASP states/keys so our login request looks legit
+                request = (HttpWebRequest)WebRequest.Create(initialPageUrl);
+                request.Method = "GET";
+                request.UserAgent = userAgent;
+                response = request.GetResponse();
 
-            // Parse the response and create the login headers
-            pageHtml.Load(response.GetResponseStream());
-            // We need all the hidden ASP.NET state/event values. Grab everything that starts with double underscores just to make sure we get everything
-            pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")).ToList().ForEach(i => loginData.Add(i.Id, i.GetAttributeValue("value", string.Empty)));
-            loginData.Add("IsFromNewSite", "1"); // Not sure what this does exactly, but it seems necessary to include it
-            loginData.Add("JavaScriptTest", "1"); // Lie and say we support JavaScript
-            loginData.Add("ctl00$ContentPlaceHolder1$loginform$txtUserName", un); // Username
-            loginData.Add("txtPassword", pw.ToString()); // Password
+                // Parse the response and create the login headers
+                pageHtml.Load(response.GetResponseStream());
+                // We need all the hidden ASP.NET state/event values. Grab everything that starts with double underscores just to make sure we get everything
+                pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")).ToList().ForEach(i => loginData.Add(i.Id, i.GetAttributeValue("value", string.Empty)));
+                loginData.Add("IsFromNewSite", "1"); // Not sure what this does exactly, but it seems necessary to include it
+                loginData.Add("JavaScriptTest", "1"); // Lie and say we support JavaScript
+                loginData.Add("ctl00$ContentPlaceHolder1$loginform$txtUserName", un); // Username
+                loginData.Add("txtPassword", pw.ToString()); // Password
 
-            // Set up the actual login
-            request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.UserAgent = userAgent;
-            request.Referer = initialPageUrl;
+                // Set up the actual login
+                request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.UserAgent = userAgent;
+                request.Referer = initialPageUrl;
 
-            // Write the header
-            var data = string.Join("&", loginData.Cast<string>().Select(key => $"{key}={loginData[key]}"));
-            var buffer = Encoding.ASCII.GetBytes(data);
-            request.ContentLength = buffer.Length;
-            var requestStream = request.GetRequestStream();
-            requestStream.Write(buffer, 0, buffer.Length);
-            requestStream.Close();
+                // Write the header
+                var data = string.Join("&", loginData.Cast<string>().Select(key => $"{key}={loginData[key]}"));
+                var buffer = Encoding.ASCII.GetBytes(data);
+                request.ContentLength = buffer.Length;
+                var requestStream = request.GetRequestStream();
+                requestStream.Write(buffer, 0, buffer.Length);
+                requestStream.Close();
 
-            request.CookieContainer = new CookieContainer();
+                request.CookieContainer = new CookieContainer();
 
-            // Submit the login and parse the response
-            response = request.GetResponse();
-            response.Close();
+                // Submit the login and parse the response
+                response = request.GetResponse();
+                response.Close();
 
-            // Steal the request key and cookies for ourselves
-            CookieContainer = request.CookieContainer;
-            AjaxRequestHeader = CookieContainer.GetCookies(new Uri(rootUrl))["afg"].Value;
+                // Steal the request key and cookies for ourselves
+                CookieContainer = request.CookieContainer;
+                AjaxRequestHeader = CookieContainer.GetCookies(new Uri(rootUrl))["afg"].Value;
+
+                // If we made it all the way here, we've most likely succeeded
+                success = true;
+            }
+            catch (Exception e)
+            {
+                // Do nothing
+            }
+
+            return success;
         }
 
         public void KeepAlive()
