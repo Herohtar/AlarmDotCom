@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Serilog;
 
 namespace AlarmDotCom
 {
@@ -31,6 +32,9 @@ namespace AlarmDotCom
 
         public Client(string username, string password, CookieContainer container, string ajax)
         {
+            Log.ForContext<Client>();
+            Log.Information("AlarmDotCom WebClient initialized");
+
             CookieContainer = container;
             AjaxRequestHeader = ajax;
             un = username;
@@ -43,6 +47,8 @@ namespace AlarmDotCom
 
         public bool Login()
         {
+            Log.Information("Attempting to login as {Username}", un);
+
             var success = false;
             try
             {
@@ -52,12 +58,14 @@ namespace AlarmDotCom
                 WebResponse response;
 
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
+                Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
                 request = (HttpWebRequest)WebRequest.Create(initialPageUrl);
                 request.Method = "GET";
                 request.UserAgent = userAgent;
                 response = request.GetResponse();
 
                 // Parse the response and create the login headers
+                Log.Debug("Parsing HTML response");
                 pageHtml.Load(response.GetResponseStream());
                 // We need all the hidden ASP.NET state/event values. Grab everything that starts with double underscores just to make sure we get everything
                 pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")).ToList().ForEach(i => loginData.Add(i.Id, i.GetAttributeValue("value", string.Empty)));
@@ -67,6 +75,7 @@ namespace AlarmDotCom
                 loginData.Add("txtPassword", pw.ToString()); // Password
 
                 // Set up the actual login
+                Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
                 request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
@@ -88,6 +97,7 @@ namespace AlarmDotCom
                 response.Close();
 
                 // Steal the request key and cookies for ourselves
+                Log.Debug("Cloning cookies");
                 CookieContainer = request.CookieContainer;
                 var cookies = CookieContainer.GetCookies(new Uri(rootUrl)).OfType<Cookie>();
 
@@ -101,12 +111,21 @@ namespace AlarmDotCom
                     {
                         AjaxRequestHeader = key;
                         success = true;
+                        Log.Information("Login successful");
                     }
+                    else
+                    {
+                        Log.Error("Login failed");
+                    }
+                }
+                else
+                {
+                    Log.Error("Login failed");
                 }
             }
             catch (Exception e)
             {
-                // Do nothing
+                Log.Error(e, "Login failed");
             }
 
             return success;
@@ -114,15 +133,19 @@ namespace AlarmDotCom
 
         public bool KeepAlive()
         {
+            Log.Information("Sending keepalive request");
+
             var success = false;
             try
             {
+                Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
                 var response = UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
                 success = true;
+                Log.Information("Keepalive successful");
             }
             catch (WebException e)
             {
-                System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: Error - {e.Message}");
+                Log.Error(e, "Keepalive failed");
             }
 
             return success;
@@ -130,18 +153,25 @@ namespace AlarmDotCom
 
         public List<TemperatureSensorsDatum> GetSensorData(int temperatureSensorPollFrequency)
         {
+            Log.Information("Getting sensor data");
+            Log.Debug("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
+
             string response = null;
             var success = false;
             do
             {
                 try
                 {
+                    Log.Debug("Posting sensor data request to {SensorDataUrl}", temperatureSensorDataUrl);
                     response = UploadString(temperatureSensorDataUrl, $"{{\"temperaturesensorPollFrequency\":{temperatureSensorPollFrequency}}}");
                     success = true;
+                    Log.Debug("Got {Data}", response);
+                    Log.Information("Sensor data request successful");
                 }
                 catch (WebException e)
                 {
-                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: Logging back in... {e.Message}");
+                    Log.Error(e, "Sensor data request failed");
+                    Log.Information("Attempting to log in again");
                     Login();
                 }
             } while (!success);
@@ -157,6 +187,7 @@ namespace AlarmDotCom
 
         protected override WebRequest GetWebRequest(Uri address)
         {
+            Log.Debug("Building WebRequest for {Url}", address);
             var request = (HttpWebRequest)base.GetWebRequest(address);
             request.CookieContainer = CookieContainer;
             request.Headers.Add("AjaxRequestUniqueKey", AjaxRequestHeader);
