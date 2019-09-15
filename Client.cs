@@ -118,6 +118,10 @@ namespace AlarmDotCom
                         Log.Error("Login failed");
                     }
                 }
+                else
+                {
+                    Log.Error("Login failed");
+                }
             }
             catch (Exception e)
             {
