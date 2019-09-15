@@ -1,13 +1,8 @@
-﻿using AlarmDotCom.JsonObjects.AvailableSystemItems;
-using AlarmDotCom.JsonObjects.ResponseData;
-using AlarmDotCom.JsonObjects.Systems;
-using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
-using AlarmDotCom.JsonObjects.ThermostatInfo;
+﻿using AlarmDotCom.JsonObjects.ResponseData;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -131,29 +126,6 @@ namespace AlarmDotCom
             }
 
             return success;
-        }
-
-        public void GetSensors()
-        {
-            try
-            {
-                var response = DownloadString(availableSystemItemsUrl);
-                var availableSystemItems = AvailableSystemItems.FromJson(response);
-                var systemId = availableSystemItems.Value[0].Id;
-
-                response = DownloadString(string.Concat(systemsUrl, systemId));
-                var systems = Systems.FromJson(response);
-                var thermostats = (from thermostat in systems.Value.Thermostats
-                                   select ThermostatInfo.FromJson(DownloadString(string.Concat(thermostatsUrl, thermostat.Id)))
-                                   ).ToList();
-                var temperatureSensors = (from temperatureSensor in systems.Value.RemoteTemperatureSensors
-                                          select TemperatureSensorInfo.FromJson(DownloadString(string.Concat(temperatureSensorsUrl, temperatureSensor.Id)))
-                                          ).ToList();
-            }
-            catch (WebException e)
-            {
-                System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: Error - {e.Message}");
-            }
         }
 
         public List<TemperatureSensorsDatum> GetSensorData(int temperatureSensorPollFrequency)
