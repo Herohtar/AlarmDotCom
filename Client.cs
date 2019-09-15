@@ -153,7 +153,8 @@ namespace AlarmDotCom
 
         public List<TemperatureSensorsDatum> GetSensorData(int temperatureSensorPollFrequency)
         {
-            Log.Information("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
+            Log.Information("Getting sensor data");
+            Log.Debug("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
 
             string response = null;
             var success = false;
