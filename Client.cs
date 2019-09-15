@@ -117,16 +117,20 @@ namespace AlarmDotCom
             return success;
         }
 
-        public void KeepAlive()
+        public bool KeepAlive()
         {
+            var success = false;
             try
             {
                 var response = UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
+                success = true;
             }
             catch (WebException e)
             {
                 System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: Error - {e.Message}");
             }
+
+            return success;
         }
 
         public void GetSensors()
