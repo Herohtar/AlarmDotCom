@@ -94,10 +94,20 @@ namespace AlarmDotCom
 
                 // Steal the request key and cookies for ourselves
                 CookieContainer = request.CookieContainer;
-                AjaxRequestHeader = CookieContainer.GetCookies(new Uri(rootUrl))["afg"].Value;
+                var cookies = CookieContainer.GetCookies(new Uri(rootUrl)).OfType<Cookie>();
 
-                // If we made it all the way here, we've most likely succeeded
-                success = true;
+                if (cookies.Any(cookie => cookie.Name.Equals("loggedInAsSubscriber") && cookie.Value.Equals("1")))
+                {
+                    var key = (from cookie in cookies
+                               where cookie.Name.Equals("afg")
+                               select cookie.Value).FirstOrDefault();
+
+                    if (key != null)
+                    {
+                        AjaxRequestHeader = key;
+                        success = true;
+                    }
+                }
             }
             catch (Exception e)
             {
