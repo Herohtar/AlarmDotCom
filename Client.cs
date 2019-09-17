@@ -1,8 +1,10 @@
 ﻿using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -139,13 +141,36 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
-                success = true;
-                Log.Information("Keepalive successful");
+                var response = KeepAliveResponse.FromJson(UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
+                {
+                    success = true;
+                    Log.Information("Keepalive successful");
+                }
+                else
+                {
+                    Log.Error("Unrecognized keepalive status: {Status}", response.Status);
+                }
             }
             catch (WebException e)
             {
-                Log.Error(e, "Keepalive failed");
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    var response = KeepAliveResponse.FromJson(new StreamReader(e.Response.GetResponseStream()).ReadToEnd());
+                    if (response.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log.Error("Keepalive failed: {Status}", response.Status);
+                        success = Login();
+                    }
+                    else
+                    {
+                        Log.Error("Unrecognized keepalive status: {Status}", response.Status);
+                    }
+                }
+                else
+                {
+                    Log.Error(e, "Keepalive failed");
+                }
             }
 
             return success;
