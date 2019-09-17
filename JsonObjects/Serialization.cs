@@ -11,6 +11,7 @@ namespace AlarmDotCom.JsonObjects
         public static string ToJson(this Systems.Systems self) => JsonConvert.SerializeObject(self, Converter.Settings);
         public static string ToJson(this ThermostatInfo.ThermostatInfo self) => JsonConvert.SerializeObject(self, Converter.Settings);
         public static string ToJson(this TemperatureSensorInfo.TemperatureSensorInfo self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this KeepAliveResponse self) => JsonConvert.SerializeObject(self, Converter.Settings);
     }
 
     internal class Converter
