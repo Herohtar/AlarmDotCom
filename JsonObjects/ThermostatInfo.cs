@@ -5,24 +5,41 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
 {
     public partial class ThermostatInfo
     {
-        [JsonProperty("value")]
-        public Value Value { get; set; }
+        [JsonProperty("data")]
+        public Data Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonProperty("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonProperty("meta")]
+        public ThermostatInfoMeta Meta { get; set; }
     }
 
-    public partial class MetaData
+    public partial class Data
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonProperty("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public partial class Attributes
     {
+        [JsonProperty("requiresSetup")]
+        public bool RequiresSetup { get; set; }
+
         [JsonProperty("forwardingAmbientTemp")]
         public long ForwardingAmbientTemp { get; set; }
+
+        [JsonProperty("humidityLevel")]
+        public object HumidityLevel { get; set; }
 
         [JsonProperty("minHeatSetpoint")]
         public long MinHeatSetpoint { get; set; }
@@ -35,6 +52,12 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
 
         [JsonProperty("maxCoolSetpoint")]
         public long MaxCoolSetpoint { get; set; }
+
+        [JsonProperty("minAuxHeatSetpoint")]
+        public long MinAuxHeatSetpoint { get; set; }
+
+        [JsonProperty("maxAuxHeatSetpoint")]
+        public long MaxAuxHeatSetpoint { get; set; }
 
         [JsonProperty("heatSetpoint")]
         public long HeatSetpoint { get; set; }
@@ -72,6 +95,12 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         [JsonProperty("autoSetpointBuffer")]
         public long AutoSetpointBuffer { get; set; }
 
+        [JsonProperty("thirdPartySettingsUrlDesc")]
+        public object ThirdPartySettingsUrlDesc { get; set; }
+
+        [JsonProperty("thirdPartySettingsUrl")]
+        public object ThirdPartySettingsUrl { get; set; }
+
         [JsonProperty("state")]
         public long State { get; set; }
 
@@ -90,14 +119,20 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         [JsonProperty("desiredFanMode")]
         public long DesiredFanMode { get; set; }
 
+        [JsonProperty("fanDuration")]
+        public object FanDuration { get; set; }
+
         [JsonProperty("localDisplayLockingMode")]
         public long LocalDisplayLockingMode { get; set; }
 
-        [JsonProperty("ruleSuggestions")]
-        public List<RemoteTemperatureSensor> RuleSuggestions { get; set; }
+        [JsonProperty("desiredLocalDisplayLockingMode")]
+        public object DesiredLocalDisplayLockingMode { get; set; }
 
-        [JsonProperty("remoteTemperatureSensors")]
-        public List<RemoteTemperatureSensor> RemoteTemperatureSensors { get; set; }
+        [JsonProperty("hasRtsIssue")]
+        public bool HasRtsIssue { get; set; }
+
+        [JsonProperty("supportsSetpoints")]
+        public bool SupportsSetpoints { get; set; }
 
         [JsonProperty("isPoolController")]
         public bool IsPoolController { get; set; }
@@ -129,6 +164,9 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         [JsonProperty("supportsIndefiniteFanOn")]
         public bool SupportsIndefiniteFanOn { get; set; }
 
+        [JsonProperty("supportedFanDurations")]
+        public List<long> SupportedFanDurations { get; set; }
+
         [JsonProperty("supportsCirculateFanModeAlways")]
         public bool SupportsCirculateFanModeAlways { get; set; }
 
@@ -150,6 +188,21 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         [JsonProperty("supportsHvacAnalytics")]
         public bool SupportsHvacAnalytics { get; set; }
 
+        [JsonProperty("supportsThirdPartySettings")]
+        public bool SupportsThirdPartySettings { get; set; }
+
+        [JsonProperty("hasPendingTempModeChange")]
+        public bool HasPendingTempModeChange { get; set; }
+
+        [JsonProperty("hasPendingSetpointChange")]
+        public bool HasPendingSetpointChange { get; set; }
+
+        [JsonProperty("hasPendingHeatSetpointChange")]
+        public bool HasPendingHeatSetpointChange { get; set; }
+
+        [JsonProperty("hasPendingCoolSetpointChange")]
+        public bool HasPendingCoolSetpointChange { get; set; }
+
         [JsonProperty("ambientTemp")]
         public long AmbientTemp { get; set; }
 
@@ -158,9 +211,6 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
 
         [JsonProperty("tempForwardingActive")]
         public bool TempForwardingActive { get; set; }
-
-        [JsonProperty("system")]
-        public ValueSystem System { get; set; }
 
         [JsonProperty("canBeSaved")]
         public bool CanBeSaved { get; set; }
@@ -180,8 +230,11 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         [JsonProperty("batteryLevelNull")]
         public long BatteryLevelNull { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("lowBattery")]
+        public bool LowBattery { get; set; }
+
+        [JsonProperty("criticalBattery")]
+        public bool CriticalBattery { get; set; }
     }
 
     public partial class DeviceIcon
@@ -190,16 +243,61 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         public long Icon { get; set; }
     }
 
-    public partial class RemoteTemperatureSensor
+    public partial class Relationships
+    {
+        [JsonProperty("ruleSuggestions")]
+        public RemoteTemperatureSensors RuleSuggestions { get; set; }
+
+        [JsonProperty("thermostatSettingsTemplate")]
+        public BoilerControlSystem ThermostatSettingsTemplate { get; set; }
+
+        [JsonProperty("remoteTemperatureSensors")]
+        public RemoteTemperatureSensors RemoteTemperatureSensors { get; set; }
+
+        [JsonProperty("boilerControlSystem")]
+        public BoilerControlSystem BoilerControlSystem { get; set; }
+
+        [JsonProperty("system")]
+        public BoilerControlSystem System { get; set; }
+
+        [JsonProperty("stateInfo")]
+        public BoilerControlSystem StateInfo { get; set; }
+    }
+
+    public partial class BoilerControlSystem
+    {
+        [JsonProperty("data")]
+        public Dat Data { get; set; }
+    }
+
+    public partial class Dat
     {
         [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
     }
 
-    public partial class ValueSystem
+    public partial class RemoteTemperatureSensors
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("data")]
+        public List<Dat> Data { get; set; }
+
+        [JsonProperty("meta")]
+        public RemoteTemperatureSensorsMeta Meta { get; set; }
+    }
+
+    public partial class RemoteTemperatureSensorsMeta
+    {
+        [JsonProperty("count")]
+        public string Count { get; set; }
+    }
+
+    public partial class ThermostatInfoMeta
+    {
+        [JsonProperty("transformer_version")]
+        public string TransformerVersion { get; set; }
     }
 
     public partial class ThermostatInfo
