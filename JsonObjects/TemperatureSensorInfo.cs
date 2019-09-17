@@ -5,27 +5,35 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
 {
     public partial class TemperatureSensorInfo
     {
-        [JsonProperty("value")]
-        public Value Value { get; set; }
+        [JsonProperty("data")]
+        public TemperatureSensorInfoData Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonProperty("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonProperty("meta")]
+        public Meta Meta { get; set; }
     }
 
-    public partial class MetaData
+    public partial class TemperatureSensorInfoData
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonProperty("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public partial class Attributes
     {
         [JsonProperty("state")]
         public long State { get; set; }
-
-        [JsonProperty("thermostat")]
-        public StateInfo Thermostat { get; set; }
 
         [JsonProperty("ambientTemp")]
         public long AmbientTemp { get; set; }
@@ -33,17 +41,14 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
         [JsonProperty("isPaired")]
         public bool IsPaired { get; set; }
 
-        [JsonProperty("system")]
-        public ValueSystem System { get; set; }
+        [JsonProperty("tempForwardingActive")]
+        public bool TempForwardingActive { get; set; }
 
         [JsonProperty("canBeSaved")]
         public bool CanBeSaved { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
-
-        [JsonProperty("stateInfo")]
-        public StateInfo StateInfo { get; set; }
 
         [JsonProperty("canConfirmStateChange")]
         public bool CanConfirmStateChange { get; set; }
@@ -54,8 +59,14 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
         [JsonProperty("deviceIcon")]
         public DeviceIcon DeviceIcon { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("batteryLevelNull")]
+        public object BatteryLevelNull { get; set; }
+
+        [JsonProperty("lowBattery")]
+        public bool LowBattery { get; set; }
+
+        [JsonProperty("criticalBattery")]
+        public bool CriticalBattery { get; set; }
     }
 
     public partial class DeviceIcon
@@ -64,16 +75,37 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
         public long Icon { get; set; }
     }
 
+    public partial class Relationships
+    {
+        [JsonProperty("thermostat")]
+        public StateInfo Thermostat { get; set; }
+
+        [JsonProperty("system")]
+        public StateInfo System { get; set; }
+
+        [JsonProperty("stateInfo")]
+        public StateInfo StateInfo { get; set; }
+    }
+
     public partial class StateInfo
+    {
+        [JsonProperty("data")]
+        public StateInfoData Data { get; set; }
+    }
+
+    public partial class StateInfoData
     {
         [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
     }
 
-    public partial class ValueSystem
+    public partial class Meta
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("transformer_version")]
+        public string TransformerVersion { get; set; }
     }
 
     public partial class TemperatureSensorInfo
