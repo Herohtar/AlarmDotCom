@@ -5,21 +5,32 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
 {
     public partial class AvailableSystemItems
     {
-        [JsonProperty("value")]
-        public List<Value> Value { get; set; }
+        [JsonProperty("data")]
+        public List<Datum> Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonProperty("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonProperty("meta")]
+        public AvailableSystemItemsMeta Meta { get; set; }
     }
 
-    public partial class MetaData
+    public partial class Datum
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonProperty("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public partial class Attributes
     {
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -29,12 +40,33 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
 
         [JsonProperty("isSelected")]
         public bool IsSelected { get; set; }
+    }
 
+    public partial class Relationships
+    {
         [JsonProperty("subItems")]
-        public List<object> SubItems { get; set; }
+        public SubItems SubItems { get; set; }
+    }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+    public partial class SubItems
+    {
+        [JsonProperty("data")]
+        public List<object> Data { get; set; }
+
+        [JsonProperty("meta")]
+        public SubItemsMeta Meta { get; set; }
+    }
+
+    public partial class SubItemsMeta
+    {
+        [JsonProperty("count")]
+        public string Count { get; set; }
+    }
+
+    public partial class AvailableSystemItemsMeta
+    {
+        [JsonProperty("transformer_version")]
+        public string TransformerVersion { get; set; }
     }
 
     public partial class AvailableSystemItems
