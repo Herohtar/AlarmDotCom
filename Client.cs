@@ -1,4 +1,5 @@
-﻿using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -139,9 +140,16 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
-                success = true;
-                Log.Information("Keepalive successful");
+                var response = KeepAliveResponse.FromJson(UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
+                {
+                    success = true;
+                    Log.Information("Keepalive successful");
+                }
+                else
+                {
+                    Log.Error("Unrecognized keepalive status: {Status}", response.Status);
+                }
             }
             catch (WebException e)
             {
