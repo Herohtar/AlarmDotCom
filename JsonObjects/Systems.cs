@@ -5,78 +5,41 @@ namespace AlarmDotCom.JsonObjects.Systems
 {
     public partial class Systems
     {
-        [JsonProperty("value")]
-        public Value Value { get; set; }
+        [JsonProperty("data")]
+        public Data Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonProperty("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonProperty("meta")]
+        public SystemsMeta Meta { get; set; }
     }
 
-    public partial class MetaData
+    public partial class Data
     {
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonProperty("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public partial class Attributes
     {
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("partitions")]
-        public List<Light> Partitions { get; set; }
+        [JsonProperty("hasSnapShotCameras")]
+        public bool HasSnapShotCameras { get; set; }
 
-        [JsonProperty("locks")]
-        public List<Light> Locks { get; set; }
-
-        [JsonProperty("accessControlAccessPointDevices")]
-        public List<object> AccessControlAccessPointDevices { get; set; }
-
-        [JsonProperty("holidays")]
-        public List<object> Holidays { get; set; }
-
-        [JsonProperty("cameras")]
-        public List<object> Cameras { get; set; }
-
-        [JsonProperty("garageDoors")]
-        public List<object> GarageDoors { get; set; }
-
-        [JsonProperty("waterValves")]
-        public List<object> WaterValves { get; set; }
-
-        [JsonProperty("scenes")]
-        public List<Scene> Scenes { get; set; }
-
-        [JsonProperty("sensors")]
-        public List<Sensor> Sensors { get; set; }
-
-        [JsonProperty("waterSensors")]
-        public List<object> WaterSensors { get; set; }
-
-        [JsonProperty("sumpPumps")]
-        public List<object> SumpPumps { get; set; }
-
-        [JsonProperty("waterMeters")]
-        public List<object> WaterMeters { get; set; }
-
-        [JsonProperty("lights")]
-        public List<Light> Lights { get; set; }
-
-        [JsonProperty("x10Lights")]
-        public List<object> X10Lights { get; set; }
-
-        [JsonProperty("thermostats")]
-        public List<Thermostat> Thermostats { get; set; }
-
-        [JsonProperty("remoteTemperatureSensors")]
-        public List<RemoteTemperatureSensor> RemoteTemperatureSensors { get; set; }
-
-        [JsonProperty("valveSwitches")]
-        public List<object> ValveSwitches { get; set; }
-
-        [JsonProperty("imageSensors")]
-        public List<ImageSensor> ImageSensors { get; set; }
+        [JsonProperty("supportsSecureArming")]
+        public bool SupportsSecureArming { get; set; }
 
         [JsonProperty("remainingImageQuota")]
         public long RemainingImageQuota { get; set; }
@@ -84,53 +47,119 @@ namespace AlarmDotCom.JsonObjects.Systems
         [JsonProperty("systemGroupName")]
         public string SystemGroupName { get; set; }
 
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("unitId")]
+        public long UnitId { get; set; }
     }
 
-    public partial class ImageSensor
+    public partial class Relationships
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("partitions")]
+        public PuneHedgehog Partitions { get; set; }
+
+        [JsonProperty("locks")]
+        public PuneHedgehog Locks { get; set; }
+
+        [JsonProperty("accessControlAccessPointDevices")]
+        public PuneHedgehog AccessControlAccessPointDevices { get; set; }
+
+        [JsonProperty("cameras")]
+        public PuneHedgehog Cameras { get; set; }
+
+        [JsonProperty("sdCardCameras")]
+        public PuneHedgehog SdCardCameras { get; set; }
+
+        [JsonProperty("garageDoors")]
+        public PuneHedgehog GarageDoors { get; set; }
+
+        [JsonProperty("waterValves")]
+        public PuneHedgehog WaterValves { get; set; }
+
+        [JsonProperty("scenes")]
+        public PuneHedgehog Scenes { get; set; }
+
+        [JsonProperty("sensors")]
+        public PuneHedgehog Sensors { get; set; }
+
+        [JsonProperty("waterSensors")]
+        public PuneHedgehog WaterSensors { get; set; }
+
+        [JsonProperty("sumpPumps")]
+        public PuneHedgehog SumpPumps { get; set; }
+
+        [JsonProperty("waterMeters")]
+        public PuneHedgehog WaterMeters { get; set; }
+
+        [JsonProperty("lights")]
+        public PuneHedgehog Lights { get; set; }
+
+        [JsonProperty("x10Lights")]
+        public PuneHedgehog X10Lights { get; set; }
+
+        [JsonProperty("thermostats")]
+        public PuneHedgehog Thermostats { get; set; }
+
+        [JsonProperty("remoteTemperatureSensors")]
+        public PuneHedgehog RemoteTemperatureSensors { get; set; }
+
+        [JsonProperty("valveSwitches")]
+        public PuneHedgehog ValveSwitches { get; set; }
+
+        [JsonProperty("boilerControlSystem")]
+        public BoilerControlSystem BoilerControlSystem { get; set; }
+
+        [JsonProperty("geoDevices")]
+        public PuneHedgehog GeoDevices { get; set; }
+
+        [JsonProperty("fences")]
+        public PuneHedgehog Fences { get; set; }
+
+        [JsonProperty("imageSensors")]
+        public PuneHedgehog ImageSensors { get; set; }
+
+        [JsonProperty("configuration")]
+        public BoilerControlSystem Configuration { get; set; }
+
+        [JsonProperty("shades")]
+        public PuneHedgehog Shades { get; set; }
+
+        [JsonProperty("lutronShades")]
+        public PuneHedgehog LutronShades { get; set; }
     }
 
-    public partial class Light
+    public partial class PuneHedgehog
+    {
+        [JsonProperty("data")]
+        public List<Dat> Data { get; set; }
+
+        [JsonProperty("meta")]
+        public PurpleMeta Meta { get; set; }
+    }
+
+    public partial class Dat
     {
         [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
     }
 
-    public partial class Thermostat
+    public partial class PurpleMeta
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("count")]
+        public string Count { get; set; }
     }
 
-    public partial class RemoteTemperatureSensor
+    public partial class BoilerControlSystem
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("data")]
+        public Dat Data { get; set; }
     }
 
-    public partial class Scene
+    public partial class SystemsMeta
     {
-        [JsonProperty("system")]
-        public ImageSensor System { get; set; }
-
-        [JsonProperty("id")]
-        public long Id { get; set; }
-    }
-
-    public partial class Sensor
-    {
-        [JsonProperty("isNormalActivityMonitoringEligible")]
-        public bool IsNormalActivityMonitoringEligible { get; set; }
-
-        [JsonProperty("system")]
-        public ImageSensor System { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("transformer_version")]
+        public string TransformerVersion { get; set; }
     }
 
     public partial class Systems
