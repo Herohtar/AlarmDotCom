@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
@@ -145,7 +145,7 @@ namespace AlarmDotCom
                 if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
                     success = true;
-                    Log.Information("Keepalive successful");
+                    Log.Debug("Keepalive successful");
                 }
                 else
                 {
