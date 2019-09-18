@@ -1,4 +1,4 @@
-using AlarmDotCom.JsonObjects.ResponseData;
+﻿using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
@@ -135,7 +135,7 @@ namespace AlarmDotCom
 
         public bool KeepAlive()
         {
-            Log.Information("Sending keepalive request");
+            Log.Information("Sending keepalive");
 
             var success = false;
             try
