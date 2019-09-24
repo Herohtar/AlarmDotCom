@@ -1,169 +1,161 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.Systems
 {
-    public partial class Systems
+    public class Systems
     {
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         public Data Data { get; set; }
 
-        [JsonProperty("included")]
+        [JsonPropertyName("included")]
         public List<object> Included { get; set; }
 
-        [JsonProperty("meta")]
+        [JsonPropertyName("meta")]
         public SystemsMeta Meta { get; set; }
+
+        public static Systems FromJson(string json) => JsonSerializer.Deserialize<Systems>(json);
     }
 
-    public partial class Data
+    public class Data
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("attributes")]
+        [JsonPropertyName("attributes")]
         public Attributes Attributes { get; set; }
 
-        [JsonProperty("relationships")]
+        [JsonPropertyName("relationships")]
         public Relationships Relationships { get; set; }
     }
 
-    public partial class Attributes
+    public class Attributes
     {
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("hasSnapShotCameras")]
+        [JsonPropertyName("hasSnapShotCameras")]
         public bool HasSnapShotCameras { get; set; }
 
-        [JsonProperty("supportsSecureArming")]
+        [JsonPropertyName("supportsSecureArming")]
         public bool SupportsSecureArming { get; set; }
 
-        [JsonProperty("remainingImageQuota")]
-        public long RemainingImageQuota { get; set; }
+        [JsonPropertyName("remainingImageQuota")]
+        public int RemainingImageQuota { get; set; }
 
-        [JsonProperty("systemGroupName")]
+        [JsonPropertyName("systemGroupName")]
         public string SystemGroupName { get; set; }
 
-        [JsonProperty("unitId")]
-        public long UnitId { get; set; }
+        [JsonPropertyName("unitId")]
+        public int UnitId { get; set; }
     }
 
-    public partial class Relationships
+    public class Relationships
     {
-        [JsonProperty("partitions")]
-        public PuneHedgehog Partitions { get; set; }
+        [JsonPropertyName("partitions")]
+        public SystemInfo Partitions { get; set; }
 
-        [JsonProperty("locks")]
-        public PuneHedgehog Locks { get; set; }
+        [JsonPropertyName("locks")]
+        public SystemInfo Locks { get; set; }
 
-        [JsonProperty("accessControlAccessPointDevices")]
-        public PuneHedgehog AccessControlAccessPointDevices { get; set; }
+        [JsonPropertyName("accessControlAccessPointDevices")]
+        public SystemInfo AccessControlAccessPointDevices { get; set; }
 
-        [JsonProperty("cameras")]
-        public PuneHedgehog Cameras { get; set; }
+        [JsonPropertyName("cameras")]
+        public SystemInfo Cameras { get; set; }
 
-        [JsonProperty("sdCardCameras")]
-        public PuneHedgehog SdCardCameras { get; set; }
+        [JsonPropertyName("sdCardCameras")]
+        public SystemInfo SdCardCameras { get; set; }
 
-        [JsonProperty("garageDoors")]
-        public PuneHedgehog GarageDoors { get; set; }
+        [JsonPropertyName("garageDoors")]
+        public SystemInfo GarageDoors { get; set; }
 
-        [JsonProperty("waterValves")]
-        public PuneHedgehog WaterValves { get; set; }
+        [JsonPropertyName("waterValves")]
+        public SystemInfo WaterValves { get; set; }
 
-        [JsonProperty("scenes")]
-        public PuneHedgehog Scenes { get; set; }
+        [JsonPropertyName("scenes")]
+        public SystemInfo Scenes { get; set; }
 
-        [JsonProperty("sensors")]
-        public PuneHedgehog Sensors { get; set; }
+        [JsonPropertyName("sensors")]
+        public SystemInfo Sensors { get; set; }
 
-        [JsonProperty("waterSensors")]
-        public PuneHedgehog WaterSensors { get; set; }
+        [JsonPropertyName("waterSensors")]
+        public SystemInfo WaterSensors { get; set; }
 
-        [JsonProperty("sumpPumps")]
-        public PuneHedgehog SumpPumps { get; set; }
+        [JsonPropertyName("sumpPumps")]
+        public SystemInfo SumpPumps { get; set; }
 
-        [JsonProperty("waterMeters")]
-        public PuneHedgehog WaterMeters { get; set; }
+        [JsonPropertyName("waterMeters")]
+        public SystemInfo WaterMeters { get; set; }
 
-        [JsonProperty("lights")]
-        public PuneHedgehog Lights { get; set; }
+        [JsonPropertyName("lights")]
+        public SystemInfo Lights { get; set; }
 
-        [JsonProperty("x10Lights")]
-        public PuneHedgehog X10Lights { get; set; }
+        [JsonPropertyName("x10Lights")]
+        public SystemInfo X10Lights { get; set; }
 
-        [JsonProperty("thermostats")]
-        public PuneHedgehog Thermostats { get; set; }
+        [JsonPropertyName("thermostats")]
+        public SystemInfo Thermostats { get; set; }
 
-        [JsonProperty("remoteTemperatureSensors")]
-        public PuneHedgehog RemoteTemperatureSensors { get; set; }
+        [JsonPropertyName("remoteTemperatureSensors")]
+        public SystemInfo RemoteTemperatureSensors { get; set; }
 
-        [JsonProperty("valveSwitches")]
-        public PuneHedgehog ValveSwitches { get; set; }
+        [JsonPropertyName("valveSwitches")]
+        public SystemInfo ValveSwitches { get; set; }
 
-        [JsonProperty("boilerControlSystem")]
-        public BoilerControlSystem BoilerControlSystem { get; set; }
+        [JsonPropertyName("boilerControlSystem")]
+        public SystemInfo BoilerControlSystem { get; set; }
 
-        [JsonProperty("geoDevices")]
-        public PuneHedgehog GeoDevices { get; set; }
+        [JsonPropertyName("geoDevices")]
+        public SystemInfo GeoDevices { get; set; }
 
-        [JsonProperty("fences")]
-        public PuneHedgehog Fences { get; set; }
+        [JsonPropertyName("fences")]
+        public SystemInfo Fences { get; set; }
 
-        [JsonProperty("imageSensors")]
-        public PuneHedgehog ImageSensors { get; set; }
+        [JsonPropertyName("imageSensors")]
+        public SystemInfo ImageSensors { get; set; }
 
-        [JsonProperty("configuration")]
-        public BoilerControlSystem Configuration { get; set; }
+        [JsonPropertyName("configuration")]
+        public SystemInfo Configuration { get; set; }
 
-        [JsonProperty("shades")]
-        public PuneHedgehog Shades { get; set; }
+        [JsonPropertyName("shades")]
+        public SystemInfo Shades { get; set; }
 
-        [JsonProperty("lutronShades")]
-        public PuneHedgehog LutronShades { get; set; }
+        [JsonPropertyName("lutronShades")]
+        public SystemInfo LutronShades { get; set; }
     }
 
-    public partial class PuneHedgehog
+    public class SystemInfo
     {
-        [JsonProperty("data")]
-        public List<Dat> Data { get; set; }
+        [JsonPropertyName("data")]
+        public List<Datum> Data { get; set; }
 
-        [JsonProperty("meta")]
-        public PurpleMeta Meta { get; set; }
+        [JsonPropertyName("meta")]
+        public Meta Meta { get; set; }
     }
 
-    public partial class Dat
+    public class Meta
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
-    }
-
-    public partial class PurpleMeta
-    {
-        [JsonProperty("count")]
+        [JsonPropertyName("count")]
         public string Count { get; set; }
     }
 
-    public partial class BoilerControlSystem
+    public class Datum
     {
-        [JsonProperty("data")]
-        public Dat Data { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
     }
 
-    public partial class SystemsMeta
+    public class SystemsMeta
     {
-        [JsonProperty("transformer_version")]
+        [JsonPropertyName("transformer_version")]
         public string TransformerVersion { get; set; }
-    }
-
-    public partial class Systems
-    {
-        public static Systems FromJson(string json) => JsonConvert.DeserializeObject<Systems>(json, Converter.Settings);
     }
 }
