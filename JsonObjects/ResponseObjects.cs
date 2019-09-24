@@ -90,7 +90,7 @@ namespace AlarmDotCom.JsonObjects.ResponseData
 
         public int LastKnownReading { get; set; }
 
-        public DateTime TimestampUtc { get; set; }
+        public string TimestampUtc { get; set; }
 
         public string TimeStampTextString { get; set; }
 
