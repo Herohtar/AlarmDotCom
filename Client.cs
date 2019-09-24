@@ -176,7 +176,7 @@ namespace AlarmDotCom
             return success;
         }
 
-        public List<TemperatureSensorsDatum> GetSensorData(int temperatureSensorPollFrequency)
+        public List<TemperatureSensorsData> GetSensorData(int temperatureSensorPollFrequency)
         {
             Log.Information("Getting sensor data");
             Log.Debug("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
