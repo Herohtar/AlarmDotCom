@@ -1,15 +1,13 @@
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects
 {
-    public partial class KeepAliveResponse
+    public class KeepAliveResponse
     {
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
-    }
 
-    public partial class KeepAliveResponse
-    {
-        public static KeepAliveResponse FromJson(string json) => JsonConvert.DeserializeObject<KeepAliveResponse>(json, Converter.Settings);
+        public static KeepAliveResponse FromJson(string json) => JsonSerializer.Deserialize<KeepAliveResponse>(json);
     }
 }
