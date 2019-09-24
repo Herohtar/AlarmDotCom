@@ -1,117 +1,99 @@
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-/*
- * Representation of the JSON object returned from Alarm.com
- * Auto-generated with http://json2csharp.com/
- */
 namespace AlarmDotCom.JsonObjects.ResponseData
 {
-    public partial class ResponseData
+    public class ResponseData
     {
-        [JsonProperty("d")]
+        [JsonPropertyName("d")]
         public D D { get; set; }
+
+        public static ResponseData FromJson(string json) => JsonSerializer.Deserialize<ResponseData>(json);
     }
 
-    public partial class D
+    public class D
     {
-        [JsonProperty("__type")]
+        [JsonPropertyName("__type")]
         public string Type { get; set; }
 
-        [JsonProperty("success")]
+        [JsonPropertyName("success")]
         public bool Success { get; set; }
 
-        [JsonProperty("error")]
+        [JsonPropertyName("error")]
         public bool Error { get; set; }
 
-        [JsonProperty("problem")]
+        [JsonPropertyName("problem")]
         public bool Problem { get; set; }
 
-        [JsonProperty("successMessage")]
+        [JsonPropertyName("successMessage")]
         public List<object> SuccessMessage { get; set; }
 
-        [JsonProperty("errorMessage")]
+        [JsonPropertyName("errorMessage")]
         public List<object> ErrorMessage { get; set; }
 
-        [JsonProperty("problemMessage")]
+        [JsonPropertyName("problemMessage")]
         public List<object> ProblemMessage { get; set; }
 
-        [JsonProperty("responseMessage")]
-        public EsponseMessage ResponseMessage { get; set; }
+        [JsonPropertyName("responseMessage")]
+        public ResponseMessage ResponseMessage { get; set; }
 
-        [JsonProperty("errorResponseMessage")]
-        public EsponseMessage ErrorResponseMessage { get; set; }
+        [JsonPropertyName("errorResponseMessage")]
+        public ErrorResponseMessage ErrorResponseMessage { get; set; }
 
-        [JsonProperty("responseObject")]
+        [JsonPropertyName("responseObject")]
         public ResponseObject ResponseObject { get; set; }
 
-        [JsonProperty("HasError")]
         public bool HasError { get; set; }
     }
 
-    public partial class EsponseMessage
+    public class ResponseMessage
     {
     }
 
-    public partial class ResponseObject
+    public class ErrorResponseMessage
     {
-        [JsonProperty("temperatureSensorsData")]
-        public List<TemperatureSensorsDatum> TemperatureSensorsData { get; set; }
     }
 
-    public partial class TemperatureSensorsDatum
+    public class ResponseObject
     {
-        [JsonProperty("DeviceType")]
-        public long DeviceType { get; set; }
+        [JsonPropertyName("temperatureSensorsData")]
+        public List<TemperatureSensorsData> TemperatureSensorsData { get; set; }
+    }
 
-        [JsonProperty("RemoteTemperatureEnableStatus")]
-        public long RemoteTemperatureEnableStatus { get; set; }
+    public class TemperatureSensorsData
+    {
+        public int DeviceType { get; set; }
 
-        [JsonProperty("IsActive")]
+        public int RemoteTemperatureEnableStatus { get; set; }
+
         public bool IsActive { get; set; }
 
-        [JsonProperty("LowBattery")]
         public bool LowBattery { get; set; }
 
-        [JsonProperty("Malfunction")]
         public bool Malfunction { get; set; }
 
-        [JsonProperty("PairedThermostatId")]
-        public long? PairedThermostatId { get; set; }
+        public int? PairedThermostatId { get; set; }
 
-        [JsonProperty("PairedInManual")]
         public bool PairedInManual { get; set; }
 
-        [JsonProperty("PairedInSchedule")]
         public bool PairedInSchedule { get; set; }
 
-        [JsonProperty("UnitId")]
-        public long UnitId { get; set; }
+        public int UnitId { get; set; }
 
-        [JsonProperty("DeviceId")]
-        public long DeviceId { get; set; }
+        public int DeviceId { get; set; }
 
-        [JsonProperty("Description")]
         public string Description { get; set; }
 
-        [JsonProperty("ReadingType")]
-        public long ReadingType { get; set; }
+        public int ReadingType { get; set; }
 
-        [JsonProperty("LastKnownReading")]
-        public long LastKnownReading { get; set; }
+        public int LastKnownReading { get; set; }
 
-        [JsonProperty("TimestampUtc")]
-        public string TimestampUtc { get; set; }
+        public DateTime TimestampUtc { get; set; }
 
-        [JsonProperty("TimeStampTextString")]
         public string TimeStampTextString { get; set; }
 
-        [JsonProperty("HasReading")]
         public bool HasReading { get; set; }
-    }
-
-    public partial class ResponseData
-    {
-        public static ResponseData FromJson(string json) => JsonConvert.DeserializeObject<ResponseData>(json, Converter.Settings);
     }
 }
