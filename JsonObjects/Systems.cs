@@ -7,7 +7,7 @@ namespace AlarmDotCom.JsonObjects.Systems
     public class Systems
     {
         [JsonPropertyName("data")]
-        public Data Data { get; set; }
+        public SystemData Data { get; set; }
 
         [JsonPropertyName("included")]
         public List<object> Included { get; set; }
@@ -18,7 +18,7 @@ namespace AlarmDotCom.JsonObjects.Systems
         public static Systems FromJson(string json) => JsonSerializer.Deserialize<Systems>(json);
     }
 
-    public class Data
+    public class SystemData
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
