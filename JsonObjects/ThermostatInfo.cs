@@ -315,7 +315,7 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
     public class System
     {
         [JsonPropertyName("data")]
-        public List<Datum> Data { get; set; }
+        public Datum Data { get; set; }
     }
 
     public class StateInfo
