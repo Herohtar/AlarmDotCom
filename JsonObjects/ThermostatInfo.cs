@@ -1,307 +1,332 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.ThermostatInfo
 {
-    public partial class ThermostatInfo
+    public class ThermostatInfo
     {
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         public Data Data { get; set; }
 
-        [JsonProperty("included")]
+        [JsonPropertyName("included")]
         public List<object> Included { get; set; }
 
-        [JsonProperty("meta")]
+        [JsonPropertyName("meta")]
         public ThermostatInfoMeta Meta { get; set; }
+
+        public static ThermostatInfo FromJson(string json) => JsonSerializer.Deserialize<ThermostatInfo>(json);
     }
 
-    public partial class Data
+    public class Data
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("attributes")]
+        [JsonPropertyName("attributes")]
         public Attributes Attributes { get; set; }
 
-        [JsonProperty("relationships")]
+        [JsonPropertyName("relationships")]
         public Relationships Relationships { get; set; }
     }
 
-    public partial class Attributes
+    public class Attributes
     {
-        [JsonProperty("requiresSetup")]
+        [JsonPropertyName("requiresSetup")]
         public bool RequiresSetup { get; set; }
 
-        [JsonProperty("forwardingAmbientTemp")]
-        public long ForwardingAmbientTemp { get; set; }
+        [JsonPropertyName("forwardingAmbientTemp")]
+        public float ForwardingAmbientTemp { get; set; }
 
-        [JsonProperty("humidityLevel")]
+        [JsonPropertyName("humidityLevel")]
         public object HumidityLevel { get; set; }
 
-        [JsonProperty("minHeatSetpoint")]
-        public long MinHeatSetpoint { get; set; }
+        [JsonPropertyName("minHeatSetpoint")]
+        public float MinHeatSetpoint { get; set; }
 
-        [JsonProperty("maxHeatSetpoint")]
-        public long MaxHeatSetpoint { get; set; }
+        [JsonPropertyName("maxHeatSetpoint")]
+        public float MaxHeatSetpoint { get; set; }
 
-        [JsonProperty("minCoolSetpoint")]
-        public long MinCoolSetpoint { get; set; }
+        [JsonPropertyName("minCoolSetpoint")]
+        public float MinCoolSetpoint { get; set; }
 
-        [JsonProperty("maxCoolSetpoint")]
-        public long MaxCoolSetpoint { get; set; }
+        [JsonPropertyName("maxCoolSetpoint")]
+        public float MaxCoolSetpoint { get; set; }
 
-        [JsonProperty("minAuxHeatSetpoint")]
-        public long MinAuxHeatSetpoint { get; set; }
+        [JsonPropertyName("minAuxHeatSetpoint")]
+        public float MinAuxHeatSetpoint { get; set; }
 
-        [JsonProperty("maxAuxHeatSetpoint")]
-        public long MaxAuxHeatSetpoint { get; set; }
+        [JsonPropertyName("maxAuxHeatSetpoint")]
+        public float MaxAuxHeatSetpoint { get; set; }
 
-        [JsonProperty("heatSetpoint")]
-        public long HeatSetpoint { get; set; }
+        [JsonPropertyName("heatSetpoint")]
+        public float HeatSetpoint { get; set; }
 
-        [JsonProperty("desiredHeatSetpoint")]
-        public long DesiredHeatSetpoint { get; set; }
+        [JsonPropertyName("desiredHeatSetpoint")]
+        public float DesiredHeatSetpoint { get; set; }
 
-        [JsonProperty("coolSetpoint")]
-        public long CoolSetpoint { get; set; }
+        [JsonPropertyName("coolSetpoint")]
+        public float CoolSetpoint { get; set; }
 
-        [JsonProperty("desiredCoolSetpoint")]
-        public long DesiredCoolSetpoint { get; set; }
+        [JsonPropertyName("desiredCoolSetpoint")]
+        public float DesiredCoolSetpoint { get; set; }
 
-        [JsonProperty("homeHeatSetpoint")]
-        public long HomeHeatSetpoint { get; set; }
+        [JsonPropertyName("homeHeatSetpoint")]
+        public float HomeHeatSetpoint { get; set; }
 
-        [JsonProperty("homeCoolSetpoint")]
-        public long HomeCoolSetpoint { get; set; }
+        [JsonPropertyName("homeCoolSetpoint")]
+        public float HomeCoolSetpoint { get; set; }
 
-        [JsonProperty("awayHeatSetpoint")]
-        public long AwayHeatSetpoint { get; set; }
+        [JsonPropertyName("AwayHeatSetpoint")]
+        public float AwayHeatSetpoint { get; set; }
 
-        [JsonProperty("awayCoolSetpoint")]
-        public long AwayCoolSetpoint { get; set; }
+        [JsonPropertyName("awayCoolSetpoint")]
+        public float AwayCoolSetpoint { get; set; }
 
-        [JsonProperty("sleepHeatSetpoint")]
-        public long SleepHeatSetpoint { get; set; }
+        [JsonPropertyName("sleepHeatSetpoint")]
+        public float SleepHeatSetpoint { get; set; }
 
-        [JsonProperty("sleepCoolSetpoint")]
-        public long SleepCoolSetpoint { get; set; }
+        [JsonPropertyName("sleepCoolSetpoint")]
+        public float SleepCoolSetpoint { get; set; }
 
-        [JsonProperty("setpointOffset")]
-        public long SetpointOffset { get; set; }
+        [JsonPropertyName("setpointOffset")]
+        public float SetpointOffset { get; set; }
 
-        [JsonProperty("autoSetpointBuffer")]
-        public long AutoSetpointBuffer { get; set; }
+        [JsonPropertyName("autoSetpointBuffer")]
+        public float AutoSetpointBuffer { get; set; }
 
-        [JsonProperty("thirdPartySettingsUrlDesc")]
+        [JsonPropertyName("thirdPartySettingsUrlDesc")]
         public object ThirdPartySettingsUrlDesc { get; set; }
 
-        [JsonProperty("thirdPartySettingsUrl")]
+        [JsonPropertyName("thirdPartySettingsUrl")]
         public object ThirdPartySettingsUrl { get; set; }
 
-        [JsonProperty("state")]
-        public long State { get; set; }
+        [JsonPropertyName("state")]
+        public int State { get; set; }
 
-        [JsonProperty("desiredState")]
-        public long DesiredState { get; set; }
+        [JsonPropertyName("desiredState")]
+        public int DesiredState { get; set; }
 
-        [JsonProperty("inferredState")]
-        public long InferredState { get; set; }
+        [JsonPropertyName("inferredState")]
+        public int InferredState { get; set; }
 
-        [JsonProperty("scheduleMode")]
-        public long ScheduleMode { get; set; }
+        [JsonPropertyName("scheduleMode")]
+        public int ScheduleMode { get; set; }
 
-        [JsonProperty("fanMode")]
-        public long FanMode { get; set; }
+        [JsonPropertyName("fanMode")]
+        public int FanMode { get; set; }
 
-        [JsonProperty("desiredFanMode")]
-        public long DesiredFanMode { get; set; }
+        [JsonPropertyName("desiredFanMode")]
+        public int DesiredFanMode { get; set; }
 
-        [JsonProperty("fanDuration")]
+        [JsonPropertyName("fanDuration")]
         public object FanDuration { get; set; }
 
-        [JsonProperty("localDisplayLockingMode")]
-        public long LocalDisplayLockingMode { get; set; }
+        [JsonPropertyName("localDisplayLockingMode")]
+        public int LocalDisplayLockingMode { get; set; }
 
-        [JsonProperty("desiredLocalDisplayLockingMode")]
+        [JsonPropertyName("desiredLocalDisplayLockingMode")]
         public object DesiredLocalDisplayLockingMode { get; set; }
 
-        [JsonProperty("hasRtsIssue")]
+        [JsonPropertyName("hasRtsIssue")]
         public bool HasRtsIssue { get; set; }
 
-        [JsonProperty("supportsSetpoints")]
+        [JsonPropertyName("supportsSetpoints")]
         public bool SupportsSetpoints { get; set; }
 
-        [JsonProperty("isPoolController")]
+        [JsonPropertyName("isPoolController")]
         public bool IsPoolController { get; set; }
 
-        [JsonProperty("supportsOffMode")]
+        [JsonPropertyName("supportsOffMode")]
         public bool SupportsOffMode { get; set; }
 
-        [JsonProperty("supportsHeatMode")]
+        [JsonPropertyName("supportsHeatMode")]
         public bool SupportsHeatMode { get; set; }
 
-        [JsonProperty("supportsCoolMode")]
+        [JsonPropertyName("supportsCoolMode")]
         public bool SupportsCoolMode { get; set; }
 
-        [JsonProperty("supportsAutoMode")]
+        [JsonPropertyName("supportsAutoMode")]
         public bool SupportsAutoMode { get; set; }
 
-        [JsonProperty("supportsSmartSchedules")]
+        [JsonPropertyName("supportsSmartSchedules")]
         public bool SupportsSmartSchedules { get; set; }
 
-        [JsonProperty("supportsAuxHeatMode")]
+        [JsonPropertyName("supportsAuxHeatMode")]
         public bool SupportsAuxHeatMode { get; set; }
 
-        [JsonProperty("supportsSchedules")]
+        [JsonPropertyName("supportsSchedules")]
         public bool SupportsSchedules { get; set; }
 
-        [JsonProperty("supportsFanMode")]
+        [JsonPropertyName("supportsFanMode")]
         public bool SupportsFanMode { get; set; }
 
-        [JsonProperty("supportsIndefiniteFanOn")]
+        [JsonPropertyName("supportsIndefiniteFanOn")]
         public bool SupportsIndefiniteFanOn { get; set; }
 
-        [JsonProperty("supportedFanDurations")]
-        public List<long> SupportedFanDurations { get; set; }
+        [JsonPropertyName("supportedFanDurations")]
+        public List<int> SupportedFanDurations { get; set; }
 
-        [JsonProperty("supportsCirculateFanModeAlways")]
+        [JsonPropertyName("supportsCirculateFanModeAlways")]
         public bool SupportsCirculateFanModeAlways { get; set; }
 
-        [JsonProperty("supportsCirculateFanModeWhenOff")]
+        [JsonPropertyName("supportsCirculateFanModeWhenOff")]
         public bool SupportsCirculateFanModeWhenOff { get; set; }
 
-        [JsonProperty("supportsRts")]
+        [JsonPropertyName("supportsRts")]
         public bool SupportsRts { get; set; }
 
-        [JsonProperty("supportsHumidity")]
+        [JsonPropertyName("supportsHumidity")]
         public bool SupportsHumidity { get; set; }
 
-        [JsonProperty("supportsLocalDisplayLocking")]
+        [JsonPropertyName("supportsLocalDisplayLocking")]
         public bool SupportsLocalDisplayLocking { get; set; }
 
-        [JsonProperty("supportsPartialLocalDisplayLocking")]
+        [JsonPropertyName("supportsPartialLocalDisplayLocking")]
         public bool SupportsPartialLocalDisplayLocking { get; set; }
 
-        [JsonProperty("supportsHvacAnalytics")]
+        [JsonPropertyName("supportsHvacAnalytics")]
         public bool SupportsHvacAnalytics { get; set; }
 
-        [JsonProperty("supportsThirdPartySettings")]
+        [JsonPropertyName("supportsThirdPartySettings")]
         public bool SupportsThirdPartySettings { get; set; }
 
-        [JsonProperty("hasPendingTempModeChange")]
+        [JsonPropertyName("hasPendingTempModeChange")]
         public bool HasPendingTempModeChange { get; set; }
 
-        [JsonProperty("hasPendingSetpointChange")]
+        [JsonPropertyName("hasPendingSetpointChange")]
         public bool HasPendingSetpointChange { get; set; }
 
-        [JsonProperty("hasPendingHeatSetpointChange")]
+        [JsonPropertyName("hasPendingHeatSetpointChange")]
         public bool HasPendingHeatSetpointChange { get; set; }
 
-        [JsonProperty("hasPendingCoolSetpointChange")]
+        [JsonPropertyName("hasPendingCoolSetpointChange")]
         public bool HasPendingCoolSetpointChange { get; set; }
 
-        [JsonProperty("ambientTemp")]
-        public long AmbientTemp { get; set; }
+        [JsonPropertyName("ambientTemp")]
+        public float AmbientTemp { get; set; }
 
-        [JsonProperty("isPaired")]
+        [JsonPropertyName("isPaired")]
         public bool IsPaired { get; set; }
 
-        [JsonProperty("tempForwardingActive")]
+        [JsonPropertyName("tempForwardingActive")]
         public bool TempForwardingActive { get; set; }
 
-        [JsonProperty("canBeSaved")]
+        [JsonPropertyName("canBeSaved")]
         public bool CanBeSaved { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("canConfirmStateChange")]
+        [JsonPropertyName("canConfirmStateChange")]
         public bool CanConfirmStateChange { get; set; }
 
-        [JsonProperty("hasPermissionToChangeState")]
+        [JsonPropertyName("hasPermissionToChangeState")]
         public bool HasPermissionToChangeState { get; set; }
 
-        [JsonProperty("deviceIcon")]
+        [JsonPropertyName("deviceIcon")]
         public DeviceIcon DeviceIcon { get; set; }
 
-        [JsonProperty("batteryLevelNull")]
-        public long BatteryLevelNull { get; set; }
+        [JsonPropertyName("batteryLevelNull")]
+        public int BatteryLevelNull { get; set; }
 
-        [JsonProperty("lowBattery")]
+        [JsonPropertyName("lowBattery")]
         public bool LowBattery { get; set; }
 
-        [JsonProperty("criticalBattery")]
+        [JsonPropertyName("criticalBattery")]
         public bool CriticalBattery { get; set; }
     }
 
-    public partial class DeviceIcon
+    public class DeviceIcon
     {
-        [JsonProperty("icon")]
-        public long Icon { get; set; }
+        [JsonPropertyName("Icon")]
+        public int Icon { get; set; }
     }
 
-    public partial class Relationships
+    public class Relationships
     {
-        [JsonProperty("ruleSuggestions")]
-        public RemoteTemperatureSensors RuleSuggestions { get; set; }
+        [JsonPropertyName("ruleSuggestions")]
+        public RuleSuggestions RuleSuggestions { get; set; }
 
-        [JsonProperty("thermostatSettingsTemplate")]
-        public BoilerControlSystem ThermostatSettingsTemplate { get; set; }
+        [JsonPropertyName("thermostatSettingsTemplate")]
+        public ThermostatSettingsTemplate ThermostatSettingsTemplate { get; set; }
 
-        [JsonProperty("remoteTemperatureSensors")]
+        [JsonPropertyName("remoteTemperatureSensors")]
         public RemoteTemperatureSensors RemoteTemperatureSensors { get; set; }
 
-        [JsonProperty("boilerControlSystem")]
+        [JsonPropertyName("boilerControlSystem")]
         public BoilerControlSystem BoilerControlSystem { get; set; }
 
-        [JsonProperty("system")]
-        public BoilerControlSystem System { get; set; }
+        [JsonPropertyName("system")]
+        public System System { get; set; }
 
-        [JsonProperty("stateInfo")]
-        public BoilerControlSystem StateInfo { get; set; }
+        [JsonPropertyName("stateInfo")]
+        public StateInfo StateInfo { get; set; }
     }
 
-    public partial class BoilerControlSystem
+    public class RuleSuggestions
     {
-        [JsonProperty("data")]
-        public Dat Data { get; set; }
+        [JsonPropertyName("data")]
+        public List<Datum> Data { get; set; }
+
+        [JsonPropertyName("meta")]
+        public Meta Meta { get; set; }
     }
 
-    public partial class Dat
+    public class Meta
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("type")]
-        public string Type { get; set; }
-    }
-
-    public partial class RemoteTemperatureSensors
-    {
-        [JsonProperty("data")]
-        public List<Dat> Data { get; set; }
-
-        [JsonProperty("meta")]
-        public RemoteTemperatureSensorsMeta Meta { get; set; }
-    }
-
-    public partial class RemoteTemperatureSensorsMeta
-    {
-        [JsonProperty("count")]
+        [JsonPropertyName("count")]
         public string Count { get; set; }
     }
 
-    public partial class ThermostatInfoMeta
+    public class Datum
     {
-        [JsonProperty("transformer_version")]
-        public string TransformerVersion { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
     }
 
-    public partial class ThermostatInfo
+    public class ThermostatSettingsTemplate
     {
-        public static ThermostatInfo FromJson(string json) => JsonConvert.DeserializeObject<ThermostatInfo>(json, Converter.Settings);
+        [JsonPropertyName("data")]
+        public object data { get; set; }
+    }
+
+    public class RemoteTemperatureSensors
+    {
+        [JsonPropertyName("data")]
+        public List<Datum> Data { get; set; }
+
+        [JsonPropertyName("meta")]
+        public Meta Meta { get; set; }
+    }
+
+    public class BoilerControlSystem
+    {
+        [JsonPropertyName("data")]
+        public object Data { get; set; }
+    }
+
+    public class System
+    {
+        [JsonPropertyName("data")]
+        public List<Datum> Data { get; set; }
+    }
+
+    public class StateInfo
+    {
+        [JsonPropertyName("data")]
+        public object Data { get; set; }
+    }
+
+    public class ThermostatInfoMeta
+    {
+        [JsonPropertyName("transformer_version")]
+        public string TransformerVersion { get; set; }
     }
 }
