@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
@@ -217,6 +217,7 @@ namespace AlarmDotCom
             request.CookieContainer = CookieContainer;
             request.Headers.Add("AjaxRequestUniqueKey", AjaxRequestHeader);
             request.UserAgent = userAgent;
+            request.Accept = "application/vnd.api+json";
             request.ContentType = "application/json; charset=utf-8";
             return request;
         }
