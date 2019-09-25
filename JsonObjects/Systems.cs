@@ -120,7 +120,7 @@ namespace AlarmDotCom.JsonObjects.Systems
         public SystemInfo ImageSensors { get; set; }
 
         [JsonPropertyName("configuration")]
-        public SystemInfo Configuration { get; set; }
+        public Datum Configuration { get; set; }
 
         [JsonPropertyName("shades")]
         public SystemInfo Shades { get; set; }
