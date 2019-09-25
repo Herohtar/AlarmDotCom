@@ -7,7 +7,7 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
     public class ThermostatInfo
     {
         [JsonPropertyName("data")]
-        public Data Data { get; set; }
+        public ThermostatData Data { get; set; }
 
         [JsonPropertyName("included")]
         public List<object> Included { get; set; }
@@ -18,7 +18,7 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         public static ThermostatInfo FromJson(string json) => JsonSerializer.Deserialize<ThermostatInfo>(json);
     }
 
-    public class Data
+    public class ThermostatData
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
