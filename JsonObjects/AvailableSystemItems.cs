@@ -7,7 +7,7 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
     public class AvailableSystemItems
     {
         [JsonPropertyName("data")]
-        public List<Datum> Data { get; set; }
+        public List<SystemItemData> Data { get; set; }
 
         [JsonPropertyName("included")]
         public List<object> Included { get; set; }
@@ -24,7 +24,7 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
         public string TransformerVersion { get; set; }
     }
 
-    public class Datum
+    public class SystemItemData
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
