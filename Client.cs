@@ -256,6 +256,7 @@ namespace AlarmDotCom
             return temperatureSensor.Data;
         }
 
+        [Obsolete("This function is deprecated and will be removed in a future release. Use the specific item APIs instead.")]
         public List<TemperatureSensorsData> GetSensorData(int temperatureSensorPollFrequency)
         {
             Log.Information("Getting sensor data");
