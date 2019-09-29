@@ -1,4 +1,4 @@
-using AlarmDotCom.JsonObjects.ResponseData;
+﻿using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects;
 using HtmlAgilityPack;
 using System;
@@ -174,6 +174,29 @@ namespace AlarmDotCom
             }
 
             return success;
+        }
+
+        private string getJsonData(string requestUrl)
+        {
+            string response = null;
+            var success = false;
+            do
+            {
+                try
+                {
+                    Log.Debug("Requesting {Url}", requestUrl);
+                    response = DownloadString(requestUrl);
+                    success = true;
+                    Log.Debug("Got {Data}", response);
+                }
+                catch (WebException e)
+                {
+                    Log.Error(e, "Request failed");
+                    Login();
+                }
+            } while (!success);
+
+            return response;
         }
 
         public List<TemperatureSensorsData> GetSensorData(int temperatureSensorPollFrequency)
