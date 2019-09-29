@@ -96,15 +96,6 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
         public Datum Data { get; set; }
     }
 
-    public class Datum
-    {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-    }
-
     public class System
     {
         [JsonPropertyName("data")]

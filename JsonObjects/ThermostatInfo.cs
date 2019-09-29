@@ -276,15 +276,6 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         public Meta Meta { get; set; }
     }
 
-    public class Datum
-    {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-    }
-
     public class ThermostatSettingsTemplate
     {
         [JsonPropertyName("data")]
