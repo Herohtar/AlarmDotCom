@@ -57,12 +57,6 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
         public List<object> Data { get; set; }
 
         [JsonPropertyName("meta")]
-        public SubItemsMeta Meta { get; set; }
-    }
-
-    public class SubItemsMeta
-    {
-        [JsonPropertyName("count")]
-        public string Count { get; set; }
+        public Meta Meta { get; set; }
     }
 }
