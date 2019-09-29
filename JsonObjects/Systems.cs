@@ -13,7 +13,7 @@ namespace AlarmDotCom.JsonObjects.Systems
         public List<object> Included { get; set; }
 
         [JsonPropertyName("meta")]
-        public SystemsMeta Meta { get; set; }
+        public ItemMeta Meta { get; set; }
 
         public static Systems FromJson(string json) => JsonSerializer.Deserialize<Systems>(json);
     }
@@ -151,11 +151,5 @@ namespace AlarmDotCom.JsonObjects.Systems
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
-    }
-
-    public class SystemsMeta
-    {
-        [JsonPropertyName("transformer_version")]
-        public string TransformerVersion { get; set; }
     }
 }

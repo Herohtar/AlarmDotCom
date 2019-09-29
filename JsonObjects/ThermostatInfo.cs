@@ -13,7 +13,7 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
         public List<object> Included { get; set; }
 
         [JsonPropertyName("meta")]
-        public ThermostatInfoMeta Meta { get; set; }
+        public ItemMeta Meta { get; set; }
 
         public static ThermostatInfo FromJson(string json) => JsonSerializer.Deserialize<ThermostatInfo>(json);
     }
@@ -322,11 +322,5 @@ namespace AlarmDotCom.JsonObjects.ThermostatInfo
     {
         [JsonPropertyName("data")]
         public object Data { get; set; }
-    }
-
-    public class ThermostatInfoMeta
-    {
-        [JsonPropertyName("transformer_version")]
-        public string TransformerVersion { get; set; }
     }
 }

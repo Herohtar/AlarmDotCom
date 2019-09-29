@@ -13,7 +13,7 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
         public List<object> Included { get; set; }
 
         [JsonPropertyName("meta")]
-        public TemperatureSensorInfoMeta Meta { get; set; }
+        public ItemMeta Meta { get; set; }
 
         public static TemperatureSensorInfo FromJson(string json) => JsonSerializer.Deserialize<TemperatureSensorInfo>(json);
     }
@@ -115,11 +115,5 @@ namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
     {
         [JsonPropertyName("data")]
         public Datum Data { get; set; }
-    }
-
-    public class TemperatureSensorInfoMeta
-    {
-        [JsonPropertyName("transformer_version")]
-        public string TransformerVersion { get; set; }
     }
 }

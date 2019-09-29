@@ -13,15 +13,9 @@ namespace AlarmDotCom.JsonObjects.AvailableSystemItems
         public List<object> Included { get; set; }
 
         [JsonPropertyName("meta")]
-        public AvailableSystemItemsMeta Meta { get; set; }
+        public ItemMeta Meta { get; set; }
 
         public static AvailableSystemItems FromJson(string json) => JsonSerializer.Deserialize<AvailableSystemItems>(json);
-    }
-
-    public class AvailableSystemItemsMeta
-    {
-        [JsonPropertyName("transformer_version")]
-        public string TransformerVersion { get; set; }
     }
 
     public class SystemItemData
