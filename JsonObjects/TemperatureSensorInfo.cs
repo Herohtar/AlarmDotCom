@@ -1,83 +1,110 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
 {
-    public partial class TemperatureSensorInfo
+    internal class TemperatureSensorInfo
     {
-        [JsonProperty("value")]
-        public Value Value { get; set; }
+        [JsonPropertyName("data")]
+        public TemperatureSensorData Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonPropertyName("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonPropertyName("meta")]
+        public ItemMeta Meta { get; set; }
+
+        public static TemperatureSensorInfo FromJson(string json) => JsonSerializer.Deserialize<TemperatureSensorInfo>(json);
     }
 
-    public partial class MetaData
+    public class TemperatureSensorData
     {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonPropertyName("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public class Attributes
     {
-        [JsonProperty("state")]
-        public long State { get; set; }
+        [JsonPropertyName("state")]
+        public int State { get; set; }
 
-        [JsonProperty("thermostat")]
-        public StateInfo Thermostat { get; set; }
+        [JsonPropertyName("ambientTemp")]
+        public float AmbientTemp { get; set; }
 
-        [JsonProperty("ambientTemp")]
-        public long AmbientTemp { get; set; }
-
-        [JsonProperty("isPaired")]
+        [JsonPropertyName("isPaired")]
         public bool IsPaired { get; set; }
 
-        [JsonProperty("system")]
-        public ValueSystem System { get; set; }
+        [JsonPropertyName("tempForwardingActive")]
+        public bool TempForwardingActive { get; set; }
 
-        [JsonProperty("canBeSaved")]
+        [JsonPropertyName("canBeSaved")]
         public bool CanBeSaved { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("stateInfo")]
-        public StateInfo StateInfo { get; set; }
-
-        [JsonProperty("canConfirmStateChange")]
+        [JsonPropertyName("canConfirmStateChange")]
         public bool CanConfirmStateChange { get; set; }
 
-        [JsonProperty("hasPermissionToChangeState")]
+        [JsonPropertyName("hasPermissionToChangeState")]
         public bool HasPermissionToChangeState { get; set; }
 
-        [JsonProperty("deviceIcon")]
+        [JsonPropertyName("deviceIcon")]
         public DeviceIcon DeviceIcon { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonPropertyName("batteryLevelNull")]
+        public object BatteryLevelNull { get; set; }
+
+        [JsonPropertyName("lowBattery")]
+        public bool LowBattery { get; set; }
+
+        [JsonPropertyName("criticalBattery")]
+        public bool CriticalBattery { get; set; }
     }
 
-    public partial class DeviceIcon
+    public class DeviceIcon
     {
-        [JsonProperty("icon")]
-        public long Icon { get; set; }
+        [JsonPropertyName("icon")]
+        public int Icon { get; set; }
     }
 
-    public partial class StateInfo
+    public class Relationships
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonPropertyName("thermostat")]
+        public Thermostat Thermostat { get; set; }
+
+        [JsonPropertyName("system")]
+        public System System { get; set; }
+
+        [JsonPropertyName("stateInfo")]
+        public StateInfo StateInfo { get; set; }
     }
 
-    public partial class ValueSystem
+    public class Thermostat
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonPropertyName("data")]
+        public Datum Data { get; set; }
     }
 
-    public partial class TemperatureSensorInfo
+    public class System
     {
-        public static TemperatureSensorInfo FromJson(string json) => JsonConvert.DeserializeObject<TemperatureSensorInfo>(json, Converter.Settings);
+        [JsonPropertyName("data")]
+        public Datum Data { get; set; }
+    }
+
+    public class StateInfo
+    {
+        [JsonPropertyName("data")]
+        public Datum Data { get; set; }
     }
 }

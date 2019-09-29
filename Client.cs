@@ -1,5 +1,9 @@
-﻿using AlarmDotCom.JsonObjects.ResponseData;
-using AlarmDotCom.JsonObjects;
+﻿using AlarmDotCom.JsonObjects;
+using AlarmDotCom.JsonObjects.AvailableSystemItems;
+using AlarmDotCom.JsonObjects.ResponseData;
+using AlarmDotCom.JsonObjects.Systems;
+using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
+using AlarmDotCom.JsonObjects.ThermostatInfo;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -176,7 +180,83 @@ namespace AlarmDotCom
             return success;
         }
 
-        public List<TemperatureSensorsDatum> GetSensorData(int temperatureSensorPollFrequency)
+        private string getJsonData(string requestUrl)
+        {
+            string response = null;
+            var success = false;
+            do
+            {
+                try
+                {
+                    Log.Debug("Requesting {Url}", requestUrl);
+                    response = DownloadString(requestUrl);
+                    success = true;
+                    Log.Debug("Got {Data}", response);
+                }
+                catch (WebException e)
+                {
+                    Log.Error(e, "Request failed");
+                    Login();
+                }
+            } while (!success);
+
+            return response;
+        }
+
+        public List<SystemItemData> GetAvailableSystems()
+        {
+            Log.Information("Getting available system items");
+
+            var json = getJsonData(availableSystemItemsUrl);
+
+            var availableSystemItems = AvailableSystemItems.FromJson(json);
+
+            return availableSystemItems.Data;
+        }
+
+        public SystemData GetSystemData(SystemItemData systemItem)
+        {
+            Log.Information("Getting information for {SystemName} system", systemItem.Attributes.Name);
+            Log.Debug("Requesting information for system ID {SystemId}", systemItem.Id);
+
+            var requestUrl = systemsUrl + systemItem.Id;
+
+            var json = getJsonData(requestUrl);
+
+            var system = Systems.FromJson(json);
+
+            return system.Data;
+        }
+
+        public ThermostatData GetThermostatData(string thermostatId)
+        {
+            Log.Information("Getting thermostat info");
+            Log.Debug("Requesting information for thermostat ID {ThermostatId}", thermostatId);
+
+            var requestUrl = thermostatsUrl + thermostatId;
+
+            var json = getJsonData(requestUrl);
+
+            var thermostat = ThermostatInfo.FromJson(json);
+
+            return thermostat.Data;
+        }
+
+        public TemperatureSensorData GetTemperatureSensorData(string temperatureSensorId)
+        {
+            Log.Information("Getting temperature sensor info");
+            Log.Debug("Requesting information for temperature sensor ID {TemperatureSensorId}", temperatureSensorId);
+
+            var requestUrl = temperatureSensorsUrl + temperatureSensorId;
+
+            var json = getJsonData(requestUrl);
+
+            var temperatureSensor = TemperatureSensorInfo.FromJson(json);
+
+            return temperatureSensor.Data;
+        }
+
+        public List<TemperatureSensorsData> GetSensorData(int temperatureSensorPollFrequency)
         {
             Log.Information("Getting sensor data");
             Log.Debug("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
@@ -217,6 +297,7 @@ namespace AlarmDotCom
             request.CookieContainer = CookieContainer;
             request.Headers.Add("AjaxRequestUniqueKey", AjaxRequestHeader);
             request.UserAgent = userAgent;
+            request.Accept = "application/vnd.api+json";
             request.ContentType = "application/json; charset=utf-8";
             return request;
         }

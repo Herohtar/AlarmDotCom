@@ -1,44 +1,62 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.AvailableSystemItems
 {
-    public partial class AvailableSystemItems
+    internal class AvailableSystemItems
     {
-        [JsonProperty("value")]
-        public List<Value> Value { get; set; }
+        [JsonPropertyName("data")]
+        public List<SystemItemData> Data { get; set; }
 
-        [JsonProperty("metaData")]
-        public MetaData MetaData { get; set; }
+        [JsonPropertyName("included")]
+        public List<object> Included { get; set; }
 
-        [JsonProperty("errors")]
-        public List<object> Errors { get; set; }
+        [JsonPropertyName("meta")]
+        public ItemMeta Meta { get; set; }
+
+        public static AvailableSystemItems FromJson(string json) => JsonSerializer.Deserialize<AvailableSystemItems>(json);
     }
 
-    public partial class MetaData
+    public class SystemItemData
     {
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+
+        [JsonPropertyName("attributes")]
+        public Attributes Attributes { get; set; }
+
+        [JsonPropertyName("relationships")]
+        public Relationships Relationships { get; set; }
     }
 
-    public partial class Value
+    public class Attributes
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("icon")]
+        [JsonPropertyName("icon")]
         public string Icon { get; set; }
 
-        [JsonProperty("isSelected")]
+        [JsonPropertyName("isSelected")]
         public bool IsSelected { get; set; }
-
-        [JsonProperty("subItems")]
-        public List<object> SubItems { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
     }
 
-    public partial class AvailableSystemItems
+    public class Relationships
     {
-        public static AvailableSystemItems FromJson(string json) => JsonConvert.DeserializeObject<AvailableSystemItems>(json, Converter.Settings);
+        [JsonPropertyName("subItems")]
+        public SubItems SubItems { get; set; }
+    }
+
+    public class SubItems
+    {
+        [JsonPropertyName("data")]
+        public List<object> Data { get; set; }
+
+        [JsonPropertyName("meta")]
+        public Meta Meta { get; set; }
     }
 }
