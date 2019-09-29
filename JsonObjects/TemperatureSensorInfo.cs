@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.TemperatureSensorInfo
 {
-    public class TemperatureSensorInfo
+    internal class TemperatureSensorInfo
     {
         [JsonPropertyName("data")]
         public TemperatureSensorData Data { get; set; }

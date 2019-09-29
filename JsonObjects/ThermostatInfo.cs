@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.ThermostatInfo
 {
-    public class ThermostatInfo
+    internal class ThermostatInfo
     {
         [JsonPropertyName("data")]
         public ThermostatData Data { get; set; }

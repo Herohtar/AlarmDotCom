@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace AlarmDotCom.JsonObjects.AvailableSystemItems
 {
-    public class AvailableSystemItems
+    internal class AvailableSystemItems
     {
         [JsonPropertyName("data")]
         public List<SystemItemData> Data { get; set; }
