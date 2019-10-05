@@ -249,17 +249,5 @@ namespace AlarmDotCom
         public CookieContainer CookieContainer { get; private set; }
 
         public string AjaxRequestHeader { get; private set; }
-
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            Log.Debug("Building WebRequest for {Url}", address);
-            var request = (HttpWebRequest)base.GetWebRequest(address);
-            request.CookieContainer = CookieContainer;
-            request.Headers.Add("AjaxRequestUniqueKey", AjaxRequestHeader);
-            request.UserAgent = userAgent;
-            request.Accept = "application/vnd.api+json";
-            request.ContentType = "application/json; charset=utf-8";
-            return request;
-        }
     }
 }
