@@ -42,8 +42,11 @@ namespace AlarmDotCom
             Log.Debug("AlarmDotCom Client created");
         }
 
-        public bool Login()
+        public bool Login(string username, string password)
         {
+            un = username;
+            pw = password;
+
             Log.Information("Attempting to login as {Username}", un);
 
             var success = false;
