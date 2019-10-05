@@ -36,21 +36,6 @@ namespace AlarmDotCom
 
         private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0"; // An actual user agent string so our request looks like it's from a real browser
 
-        public Client(string username, string password, CookieContainer container, string ajax)
-        {
-            Log.ForContext<Client>();
-            Log.Information("AlarmDotCom WebClient initialized");
-
-            CookieContainer = container;
-            AjaxRequestHeader = ajax;
-            un = username;
-            pw = password;
-        }
-
-        public Client(string username, string password)
-          : this(username, password, new CookieContainer(), string.Empty)
-        { }
-
         public bool Login()
         {
             Log.Information("Attempting to login as {Username}", un);
