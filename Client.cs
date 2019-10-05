@@ -137,7 +137,8 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = KeepAliveResponse.FromJson(UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                setHeaders();
+                var response = KeepAliveResponse.FromJson(client.UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
                 if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
                     success = true;
@@ -190,7 +191,8 @@ namespace AlarmDotCom
                 try
                 {
                     Log.Debug("Requesting {Url}", requestUrl);
-                    response = DownloadString(requestUrl);
+                    setHeaders();
+                    response = client.DownloadString(requestUrl);
                     success = true;
                     Log.Debug("Got {Data}", response);
                 }
