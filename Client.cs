@@ -172,6 +172,15 @@ namespace AlarmDotCom
             return success;
         }
 
+        private void setHeaders()
+        {
+            client.Headers.Set(HttpRequestHeader.Cookie, CookieContainer.GetCookieHeader(new Uri(rootUrl)));
+            client.Headers.Set("AjaxRequestUniqueKey", AjaxRequestHeader);
+            //client.Headers.Set(HttpRequestHeader.UserAgent, userAgent);
+            client.Headers.Set(HttpRequestHeader.Accept, "application/vnd.api+json");
+            client.Headers.Set(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
+        }
+
         private string getJsonData(string requestUrl)
         {
             string response = null;
