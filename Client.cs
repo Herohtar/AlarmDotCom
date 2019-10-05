@@ -1,6 +1,5 @@
-using AlarmDotCom.JsonObjects;
+﻿using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
-using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
 using AlarmDotCom.JsonObjects.ThermostatInfo;
