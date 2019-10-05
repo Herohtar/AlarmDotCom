@@ -256,37 +256,6 @@ namespace AlarmDotCom
             return temperatureSensor.Data;
         }
 
-        [Obsolete("This function is deprecated and will be removed in a future release. Use the specific item APIs instead.")]
-        public List<TemperatureSensorsData> GetSensorData(int temperatureSensorPollFrequency)
-        {
-            Log.Information("Getting sensor data");
-            Log.Debug("Requesting sensor data with poll frequency of {PollFrequency}", temperatureSensorPollFrequency);
-
-            string response = null;
-            var success = false;
-            do
-            {
-                try
-                {
-                    Log.Debug("Posting sensor data request to {SensorDataUrl}", temperatureSensorDataUrl);
-                    response = UploadString(temperatureSensorDataUrl, $"{{\"temperaturesensorPollFrequency\":{temperatureSensorPollFrequency}}}");
-                    success = true;
-                    Log.Debug("Got {Data}", response);
-                    Log.Information("Sensor data request successful");
-                }
-                catch (WebException e)
-                {
-                    Log.Error(e, "Sensor data request failed");
-                    Log.Information("Attempting to log in again");
-                    Login();
-                }
-            } while (!success);
-
-            var responseData = ResponseData.FromJson(response);
-
-            return responseData.D.ResponseObject.TemperatureSensorsData;
-        }
-
         public CookieContainer CookieContainer { get; private set; }
 
         public string AjaxRequestHeader { get; private set; }
