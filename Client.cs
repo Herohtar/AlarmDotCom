@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects;
+using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.ResponseData;
 using AlarmDotCom.JsonObjects.Systems;
@@ -19,7 +19,7 @@ namespace AlarmDotCom
     /// <summary>
     /// Alarm.com doesn't provide a public API. This class allows you to log in and obtain a valid session for making JSON requests
     /// </summary>
-    public class Client : WebClient
+    public class Client
     {
         private string un;
         private string pw;
