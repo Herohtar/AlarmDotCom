@@ -159,7 +159,7 @@ namespace AlarmDotCom
                     if (response.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
                     {
                         Log.Error("Keepalive failed: {Status}", response.Status);
-                        success = Login();
+                        success = Login(un, pw);
                     }
                     else
                     {
@@ -201,7 +201,7 @@ namespace AlarmDotCom
                 catch (WebException e)
                 {
                     Log.Error(e, "Request failed");
-                    Login();
+                    Login(un, pw);
                 }
             } while (!success);
 
