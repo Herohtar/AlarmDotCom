@@ -34,7 +34,7 @@ namespace AlarmDotCom
 
         private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0"; // An actual user agent string so our request looks like it's from a real browser
 
-        private readonly WebClient client = new WebClient();
+        private readonly AlarmDotComWebClient client = new AlarmDotComWebClient() { UserAgent = userAgent };
 
         public Client()
         {
