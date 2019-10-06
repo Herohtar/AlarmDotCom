@@ -53,19 +53,14 @@ namespace AlarmDotCom
             {
                 var loginData = new NameValueCollection();
                 var pageHtml = new HtmlDocument();
-                HttpWebRequest request;
-                WebResponse response;
 
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
                 Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
-                request = (HttpWebRequest)WebRequest.Create(initialPageUrl);
-                request.Method = "GET";
-                request.UserAgent = userAgent;
-                response = request.GetResponse();
+                var initialPageHtml = client.DownloadString(initialPageUrl);
 
                 // Parse the response and create the login headers
                 Log.Debug("Parsing HTML response");
-                pageHtml.Load(response.GetResponseStream());
+                pageHtml.LoadHtml(initialPageHtml);
                 // We need all the hidden ASP.NET state/event values. Grab everything that starts with double underscores just to make sure we get everything
                 pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")).ToList().ForEach(i => loginData.Add(i.Id, i.GetAttributeValue("value", string.Empty)));
                 loginData.Add("IsFromNewSite", "1"); // Not sure what this does exactly, but it seems necessary to include it
@@ -73,48 +68,19 @@ namespace AlarmDotCom
                 loginData.Add("ctl00$ContentPlaceHolder1$loginform$txtUserName", un); // Username
                 loginData.Add("txtPassword", pw.ToString()); // Password
 
-                // Set up the actual login
+                // Submit the login form
                 Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
-                request = (HttpWebRequest)WebRequest.Create(loginFormUrl);
-                request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.UserAgent = userAgent;
-                request.Referer = initialPageUrl;
+                client.Headers.Set(HttpRequestHeader.Referer, initialPageUrl);
+                client.UploadValues(loginFormUrl, loginData);
 
-                // Write the header
-                var data = string.Join("&", loginData.Cast<string>().Select(key => $"{key}={loginData[key]}"));
-                var buffer = Encoding.ASCII.GetBytes(data);
-                request.ContentLength = buffer.Length;
-                var requestStream = request.GetRequestStream();
-                requestStream.Write(buffer, 0, buffer.Length);
-                requestStream.Close();
+                // Check the login status
+                var loggedIn = client.CookieContainer.GetCookies(new Uri(rootUrl))["loggedInAsSubscriber"]?.Value;
+                Log.Debug("loggedInAsSubscriber = {LoggedIn}", loggedIn);
 
-                request.CookieContainer = cookieContainer;
-
-                // Submit the login and parse the response
-                response = request.GetResponse();
-                response.Close();
-
-                // Steal the request key and cookies for ourselves
-                Log.Debug("Cloning cookies");
-                var cookies = cookieContainer.GetCookies(new Uri(rootUrl)).OfType<Cookie>();
-
-                if (cookies.Any(cookie => cookie.Name.Equals("loggedInAsSubscriber") && cookie.Value.Equals("1")))
-                {
-                    var key = (from cookie in cookies
-                               where cookie.Name.Equals("afg")
-                               select cookie.Value).FirstOrDefault();
-
-                    if (key != null)
-                    {
-                        AjaxRequestHeader = key;
-                        success = true;
-                        Log.Information("Login successful");
-                    }
-                    else
-                    {
-                        Log.Error("Login failed");
-                    }
+                if ((loggedIn != null) && loggedIn.Equals("1"))
+                { 
+                    success = true;
+                    Log.Information("Login successful");
                 }
                 else
                 {
