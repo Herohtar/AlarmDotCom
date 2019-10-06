@@ -1,17 +1,16 @@
-using AlarmDotCom.JsonObjects;
+﻿using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
 using AlarmDotCom.JsonObjects.ThermostatInfo;
 using HtmlAgilityPack;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using Serilog;
 
 namespace AlarmDotCom
 {
@@ -78,7 +77,7 @@ namespace AlarmDotCom
                 Log.Debug("loggedInAsSubscriber = {LoggedIn}", loggedIn);
 
                 if ((loggedIn != null) && loggedIn.Equals("1"))
-                { 
+                {
                     success = true;
                     Log.Information("Login successful");
                 }
