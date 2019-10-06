@@ -4,7 +4,7 @@
     <PackageId>AlarmDotCom</PackageId>
     <Version>3.0.0</Version>
     <Authors>Herohtar</Authors>
-    <Description>Provides a C# API for logging in to your Alarm.com account and accessing temperature sensor data.</Description>
+    <Description>Provides a .NET API for logging in to your Alarm.com account and accessing temperature sensor data.</Description>
     <Copyright>Copyright (c) 2019 Herohtar</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Alarm.com;Login;Temperature;"Home Automation";"Smart Home"</PackageTags>
