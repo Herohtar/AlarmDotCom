@@ -260,7 +260,5 @@ namespace AlarmDotCom
 
             return temperatureSensor.Data;
         }
-
-        public string AjaxRequestHeader { get; private set; }
     }
 }
