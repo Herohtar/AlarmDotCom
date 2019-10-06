@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects;
+using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
@@ -27,7 +27,6 @@ namespace AlarmDotCom
         private const string initialPageUrl = @"https://www.alarm.com/login.aspx";
         private const string loginFormUrl = @"https://www.alarm.com/web/Default.aspx";
         private const string keepAliveUrl = @"https://www.alarm.com/web/KeepAlive.aspx";
-        private const string temperatureSensorDataUrl = @"https://www.alarm.com/web/Dashboard/WebServices/Dashboard.asmx/TemperatureSensorDataRefresh";
         private const string availableSystemItemsUrl = @"https://www.alarm.com/web/api/systems/availableSystemItems";
         private const string systemsUrl = @"https://www.alarm.com/web/api/systems/systems/";
         private const string thermostatsUrl = @"https://www.alarm.com/web/api/devices/thermostats/";
