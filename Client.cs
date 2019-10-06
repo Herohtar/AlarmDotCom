@@ -137,7 +137,6 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                setHeaders();
                 var response = KeepAliveResponse.FromJson(client.UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
                 if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
@@ -173,15 +172,6 @@ namespace AlarmDotCom
             return success;
         }
 
-        private void setHeaders()
-        {
-            client.Headers.Set(HttpRequestHeader.Cookie, cookieContainer.GetCookieHeader(new Uri(rootUrl)));
-            client.Headers.Set("AjaxRequestUniqueKey", AjaxRequestHeader);
-            //client.Headers.Set(HttpRequestHeader.UserAgent, userAgent);
-            client.Headers.Set(HttpRequestHeader.Accept, "application/vnd.api+json");
-            client.Headers.Set(HttpRequestHeader.ContentType, "application/json; charset=utf-8");
-        }
-
         private string getJsonData(string requestUrl)
         {
             string response = null;
@@ -191,7 +181,6 @@ namespace AlarmDotCom
                 try
                 {
                     Log.Debug("Requesting {Url}", requestUrl);
-                    setHeaders();
                     response = client.DownloadString(requestUrl);
                     success = true;
                     Log.Debug("Got {Data}", response);
