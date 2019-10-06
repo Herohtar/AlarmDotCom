@@ -36,8 +36,6 @@ namespace AlarmDotCom
 
         private readonly WebClient client = new WebClient();
 
-        private readonly CookieContainer cookieContainer = new CookieContainer();
-
         public Client()
         {
             Log.Debug("AlarmDotCom Client created");
