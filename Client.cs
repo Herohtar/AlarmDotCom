@@ -36,6 +36,8 @@ namespace AlarmDotCom
 
         private readonly WebClient client = new WebClient();
 
+        private readonly CookieContainer cookieContainer = new CookieContainer();
+
         public Client()
         {
             Log.Debug("AlarmDotCom Client created");
@@ -89,7 +91,7 @@ namespace AlarmDotCom
                 requestStream.Write(buffer, 0, buffer.Length);
                 requestStream.Close();
 
-                request.CookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
 
                 // Submit the login and parse the response
                 response = request.GetResponse();
@@ -97,8 +99,7 @@ namespace AlarmDotCom
 
                 // Steal the request key and cookies for ourselves
                 Log.Debug("Cloning cookies");
-                CookieContainer = request.CookieContainer;
-                var cookies = CookieContainer.GetCookies(new Uri(rootUrl)).OfType<Cookie>();
+                var cookies = cookieContainer.GetCookies(new Uri(rootUrl)).OfType<Cookie>();
 
                 if (cookies.Any(cookie => cookie.Name.Equals("loggedInAsSubscriber") && cookie.Value.Equals("1")))
                 {
@@ -176,7 +177,7 @@ namespace AlarmDotCom
 
         private void setHeaders()
         {
-            client.Headers.Set(HttpRequestHeader.Cookie, CookieContainer.GetCookieHeader(new Uri(rootUrl)));
+            client.Headers.Set(HttpRequestHeader.Cookie, cookieContainer.GetCookieHeader(new Uri(rootUrl)));
             client.Headers.Set("AjaxRequestUniqueKey", AjaxRequestHeader);
             //client.Headers.Set(HttpRequestHeader.UserAgent, userAgent);
             client.Headers.Set(HttpRequestHeader.Accept, "application/vnd.api+json");
@@ -259,8 +260,6 @@ namespace AlarmDotCom
 
             return temperatureSensor.Data;
         }
-
-        public CookieContainer CookieContainer { get; private set; }
 
         public string AjaxRequestHeader { get; private set; }
     }
