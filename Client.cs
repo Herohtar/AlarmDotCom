@@ -41,7 +41,7 @@ namespace AlarmDotCom
             Log.Debug("AlarmDotCom Client created");
         }
 
-        public bool Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
             un = username;
             pw = password;
@@ -56,7 +56,7 @@ namespace AlarmDotCom
 
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
                 Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
-                var initialPageHtml = client.DownloadString(initialPageUrl);
+                var initialPageHtml = await client.DownloadStringTaskAsync(initialPageUrl);
 
                 // Parse the response and create the login headers
                 Log.Debug("Parsing HTML response");
@@ -71,7 +71,7 @@ namespace AlarmDotCom
                 // Submit the login form
                 Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
                 client.Headers.Set(HttpRequestHeader.Referer, initialPageUrl);
-                client.UploadValues(loginFormUrl, loginData);
+                await client.UploadValuesTaskAsync(loginFormUrl, loginData);
 
                 // Check the login status
                 var loggedIn = client.CookieContainer.GetCookies(new Uri(rootUrl))["loggedInAsSubscriber"]?.Value;
