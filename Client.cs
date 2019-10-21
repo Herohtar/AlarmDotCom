@@ -161,53 +161,53 @@ namespace AlarmDotCom
             return response;
         }
 
-        public List<SystemItemData> GetAvailableSystems()
+        public async Task<List<SystemItemData>> GetAvailableSystems()
         {
             Log.Information("Getting available system items");
 
-            var json = getJsonData(availableSystemItemsUrl);
+            var json = await getJsonData(availableSystemItemsUrl);
 
             var availableSystemItems = AvailableSystemItems.FromJson(json);
 
             return availableSystemItems.Data;
         }
 
-        public SystemData GetSystemData(SystemItemData systemItem)
+        public async Task<SystemData> GetSystemData(SystemItemData systemItem)
         {
             Log.Information("Getting information for {SystemName} system", systemItem.Attributes.Name);
             Log.Debug("Requesting information for system ID {SystemId}", systemItem.Id);
 
             var requestUrl = systemsUrl + systemItem.Id;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var system = Systems.FromJson(json);
 
             return system.Data;
         }
 
-        public ThermostatData GetThermostatData(string thermostatId)
+        public async Task<ThermostatData> GetThermostatData(string thermostatId)
         {
             Log.Information("Getting thermostat info");
             Log.Debug("Requesting information for thermostat ID {ThermostatId}", thermostatId);
 
             var requestUrl = thermostatsUrl + thermostatId;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var thermostat = ThermostatInfo.FromJson(json);
 
             return thermostat.Data;
         }
 
-        public TemperatureSensorData GetTemperatureSensorData(string temperatureSensorId)
+        public async Task<TemperatureSensorData> GetTemperatureSensorData(string temperatureSensorId)
         {
             Log.Information("Getting temperature sensor info");
             Log.Debug("Requesting information for temperature sensor ID {TemperatureSensorId}", temperatureSensorId);
 
             var requestUrl = temperatureSensorsUrl + temperatureSensorId;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var temperatureSensor = TemperatureSensorInfo.FromJson(json);
 
