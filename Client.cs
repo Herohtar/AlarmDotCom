@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects;
+using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AlarmDotCom
 {
@@ -137,7 +138,7 @@ namespace AlarmDotCom
             return success;
         }
 
-        private string getJsonData(string requestUrl)
+        private async Task<string> getJsonData(string requestUrl)
         {
             string response = null;
             var success = false;
@@ -146,7 +147,7 @@ namespace AlarmDotCom
                 try
                 {
                     Log.Debug("Requesting {Url}", requestUrl);
-                    response = client.DownloadString(requestUrl);
+                    response = await client.DownloadStringTaskAsync(requestUrl);
                     success = true;
                     Log.Debug("Got {Data}", response);
                 }
