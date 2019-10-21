@@ -1,4 +1,4 @@
-﻿using AlarmDotCom.JsonObjects;
+using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace AlarmDotCom
 {
@@ -40,7 +41,7 @@ namespace AlarmDotCom
             Log.Debug("AlarmDotCom Client created");
         }
 
-        public bool Login(string username, string password)
+        public async Task<bool> Login(string username, string password)
         {
             un = username;
             pw = password;
@@ -55,7 +56,7 @@ namespace AlarmDotCom
 
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
                 Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
-                var initialPageHtml = client.DownloadString(initialPageUrl);
+                var initialPageHtml = await client.DownloadStringTaskAsync(initialPageUrl);
 
                 // Parse the response and create the login headers
                 Log.Debug("Parsing HTML response");
@@ -70,7 +71,7 @@ namespace AlarmDotCom
                 // Submit the login form
                 Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
                 client.Headers.Set(HttpRequestHeader.Referer, initialPageUrl);
-                client.UploadValues(loginFormUrl, loginData);
+                await client.UploadValuesTaskAsync(loginFormUrl, loginData);
 
                 // Check the login status
                 var loggedIn = client.CookieContainer.GetCookies(new Uri(rootUrl))["loggedInAsSubscriber"]?.Value;
@@ -94,7 +95,7 @@ namespace AlarmDotCom
             return success;
         }
 
-        public bool KeepAlive()
+        public async Task<bool> KeepAlive()
         {
             Log.Information("Sending keepalive");
 
@@ -102,7 +103,7 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = KeepAliveResponse.FromJson(client.UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                var response = KeepAliveResponse.FromJson(await client.UploadStringTaskAsync(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
                 if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
                     success = true;
@@ -121,7 +122,7 @@ namespace AlarmDotCom
                     if (response.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
                     {
                         Log.Error("Keepalive failed: {Status}", response.Status);
-                        success = Login(un, pw);
+                        success = await Login(un, pw);
                     }
                     else
                     {
@@ -137,7 +138,7 @@ namespace AlarmDotCom
             return success;
         }
 
-        private string getJsonData(string requestUrl)
+        private async Task<string> getJsonData(string requestUrl)
         {
             string response = null;
             var success = false;
@@ -146,67 +147,67 @@ namespace AlarmDotCom
                 try
                 {
                     Log.Debug("Requesting {Url}", requestUrl);
-                    response = client.DownloadString(requestUrl);
+                    response = await client.DownloadStringTaskAsync(requestUrl);
                     success = true;
                     Log.Debug("Got {Data}", response);
                 }
                 catch (WebException e)
                 {
                     Log.Error(e, "Request failed");
-                    Login(un, pw);
+                    await Login(un, pw);
                 }
             } while (!success);
 
             return response;
         }
 
-        public List<SystemItemData> GetAvailableSystems()
+        public async Task<List<SystemItemData>> GetAvailableSystems()
         {
             Log.Information("Getting available system items");
 
-            var json = getJsonData(availableSystemItemsUrl);
+            var json = await getJsonData(availableSystemItemsUrl);
 
             var availableSystemItems = AvailableSystemItems.FromJson(json);
 
             return availableSystemItems.Data;
         }
 
-        public SystemData GetSystemData(SystemItemData systemItem)
+        public async Task<SystemData> GetSystemData(SystemItemData systemItem)
         {
             Log.Information("Getting information for {SystemName} system", systemItem.Attributes.Name);
             Log.Debug("Requesting information for system ID {SystemId}", systemItem.Id);
 
             var requestUrl = systemsUrl + systemItem.Id;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var system = Systems.FromJson(json);
 
             return system.Data;
         }
 
-        public ThermostatData GetThermostatData(string thermostatId)
+        public async Task<ThermostatData> GetThermostatData(string thermostatId)
         {
             Log.Information("Getting thermostat info");
             Log.Debug("Requesting information for thermostat ID {ThermostatId}", thermostatId);
 
             var requestUrl = thermostatsUrl + thermostatId;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var thermostat = ThermostatInfo.FromJson(json);
 
             return thermostat.Data;
         }
 
-        public TemperatureSensorData GetTemperatureSensorData(string temperatureSensorId)
+        public async Task<TemperatureSensorData> GetTemperatureSensorData(string temperatureSensorId)
         {
             Log.Information("Getting temperature sensor info");
             Log.Debug("Requesting information for temperature sensor ID {TemperatureSensorId}", temperatureSensorId);
 
             var requestUrl = temperatureSensorsUrl + temperatureSensorId;
 
-            var json = getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl);
 
             var temperatureSensor = TemperatureSensorInfo.FromJson(json);
 
