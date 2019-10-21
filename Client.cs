@@ -95,7 +95,7 @@ namespace AlarmDotCom
             return success;
         }
 
-        public bool KeepAlive()
+        public async Task<bool> KeepAlive()
         {
             Log.Information("Sending keepalive");
 
@@ -122,7 +122,7 @@ namespace AlarmDotCom
                     if (response.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
                     {
                         Log.Error("Keepalive failed: {Status}", response.Status);
-                        success = Login(un, pw);
+                        success = await Login(un, pw);
                     }
                     else
                     {
@@ -154,7 +154,7 @@ namespace AlarmDotCom
                 catch (WebException e)
                 {
                     Log.Error(e, "Request failed");
-                    Login(un, pw);
+                    await Login(un, pw);
                 }
             } while (!success);
 
