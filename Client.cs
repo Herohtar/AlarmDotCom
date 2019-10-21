@@ -103,7 +103,7 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = KeepAliveResponse.FromJson(client.UploadString(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                var response = KeepAliveResponse.FromJson(await client.UploadStringTaskAsync(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
                 if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
                     success = true;
