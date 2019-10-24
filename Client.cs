@@ -141,25 +141,42 @@ namespace AlarmDotCom
 
         private async Task<string> getJsonData(string requestUrl)
         {
-            string response = null;
+            string json = null;
             var success = false;
             do
             {
                 try
                 {
                     Log.Debug("Requesting {Url}", requestUrl);
-                    response = await client.DownloadStringTaskAsync(requestUrl);
-                    success = true;
-                    Log.Debug("Got {Data}", response);
+                    var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                    var key = cookieContainer.GetCookies(new Uri(requestUrl))["afg"]?.Value;
+                    if (key != null)
+                    {
+                        request.Headers.Add("AjaxRequestUniqueKey", key);
+                    }
+                    request.Headers.Accept.ParseAdd("application/vnd.api+json");
+
+                    var response = await httpClient.SendAsync(request);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        success = true;
+                        json = await response.Content.ReadAsStringAsync();
+                        Log.Debug("Got {Data}", json);
+                    }
+                    else
+                    {
+                        Log.Error("Request failed");
+                        await Login(un, pw);
+                    }
                 }
-                catch (WebException e)
+                catch (HttpRequestException e)
                 {
                     Log.Error(e, "Request failed");
                     await Login(un, pw);
                 }
             } while (!success);
 
-            return response;
+            return json;
         }
 
         public async Task<List<SystemItemData>> GetAvailableSystems()
