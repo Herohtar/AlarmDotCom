@@ -120,11 +120,6 @@ namespace AlarmDotCom
                     success = true;
                     Log.Debug("Keepalive successful");
                 }
-                else if (result.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
-                {
-                    Log.Error("Keepalive failed: {Status}", result.Status);
-                    success = await Login(un, pw);
-                }
                 else
                 {
                     Log.Error("Keepalive failed: {Status}", result.Status);
