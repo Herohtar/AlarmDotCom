@@ -112,7 +112,8 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = await httpClient.PostAsync(keepAliveUrl, new StringContent($"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                // The Alarm.com web interface does this with an empty POST, but it seems to work using GET, and makes more sense that way
+                var response = await httpClient.GetAsync($"{keepAliveUrl}?timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
                 var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync());
                 if (result.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
