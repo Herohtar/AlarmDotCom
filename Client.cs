@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AlarmDotCom
@@ -34,11 +35,16 @@ namespace AlarmDotCom
 
         private const string userAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0"; // An actual user agent string so our request looks like it's from a real browser
 
-        private readonly AlarmDotComWebClient client = new AlarmDotComWebClient() { UserAgent = userAgent };
+        private readonly CookieContainer cookieContainer = new CookieContainer();
+        private readonly HttpClientHandler handler = new HttpClientHandler();
+        private readonly HttpClient httpClient;
 
         public Client()
         {
             Log.Debug("AlarmDotCom Client created");
+            handler.CookieContainer = cookieContainer;
+            httpClient = new HttpClient(handler, true);
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
         }
 
         public async Task<bool> Login(string username, string password)
