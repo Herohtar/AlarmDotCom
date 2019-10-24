@@ -114,36 +114,26 @@ namespace AlarmDotCom
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
-                var response = KeepAliveResponse.FromJson(await client.UploadStringTaskAsync(keepAliveUrl, $"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
-                if (response.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
+                var response = await httpClient.PostAsync(keepAliveUrl, new StringContent($"timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}"));
+                var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync());
+                if (result.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
                 {
                     success = true;
                     Log.Debug("Keepalive successful");
                 }
+                else if (result.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
+                {
+                    Log.Error("Keepalive failed: {Status}", result.Status);
+                    success = await Login(un, pw);
+                }
                 else
                 {
-                    Log.Error("Unrecognized keepalive status: {Status}", response.Status);
+                    Log.Error("Keepalive failed: {Status}", result.Status);
                 }
             }
-            catch (WebException e)
+            catch (HttpRequestException e)
             {
-                if (e.Status == WebExceptionStatus.ProtocolError)
-                {
-                    var response = KeepAliveResponse.FromJson(new StreamReader(e.Response.GetResponseStream()).ReadToEnd());
-                    if (response.Status.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Log.Error("Keepalive failed: {Status}", response.Status);
-                        success = await Login(un, pw);
-                    }
-                    else
-                    {
-                        Log.Error("Unrecognized keepalive status: {Status}", response.Status);
-                    }
-                }
-                else
-                {
-                    Log.Error(e, "Keepalive failed");
-                }
+                Log.Error(e, "Keepalive failed");
             }
 
             return success;
