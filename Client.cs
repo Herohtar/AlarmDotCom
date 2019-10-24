@@ -140,40 +140,35 @@ namespace AlarmDotCom
 
         private async Task<string> getJsonData(string requestUrl)
         {
-            string json = null;
-            var success = false;
-            do
-            {
-                try
-                {
-                    Log.Debug("Requesting {Url}", requestUrl);
-                    var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-                    var key = cookieContainer.GetCookies(new Uri(requestUrl))["afg"]?.Value;
-                    if (key != null)
-                    {
-                        request.Headers.Add("AjaxRequestUniqueKey", key);
-                    }
-                    request.Headers.Accept.ParseAdd("application/vnd.api+json");
+            var json = string.Empty;
 
-                    var response = await httpClient.SendAsync(request);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        success = true;
-                        json = await response.Content.ReadAsStringAsync();
-                        Log.Debug("Got {Data}", json);
-                    }
-                    else
-                    {
-                        Log.Error("Request failed");
-                        await Login(un, pw);
-                    }
-                }
-                catch (HttpRequestException e)
+            try
+            {
+                Log.Debug("Requesting {Url}", requestUrl);
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                var key = cookieContainer.GetCookies(new Uri(requestUrl))["afg"]?.Value;
+                if (key != null)
                 {
-                    Log.Error(e, "Request failed");
-                    await Login(un, pw);
+                    request.Headers.Add("AjaxRequestUniqueKey", key);
                 }
-            } while (!success);
+                request.Headers.Accept.ParseAdd("application/vnd.api+json");
+
+                var response = await httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync();
+                    Log.Debug("Got {Data}", json);
+                }
+                else
+                {
+                    var errorData = await response.Content.ReadAsStringAsync();
+                    Log.Error("Request failed: {ErrorData}", errorData);
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                Log.Error(e, "Request failed");
+            }
 
             return json;
         }
