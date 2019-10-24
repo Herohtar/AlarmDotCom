@@ -57,30 +57,35 @@ namespace AlarmDotCom
             var success = false;
             try
             {
-                var loginData = new NameValueCollection();
-                var pageHtml = new HtmlDocument();
-
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
                 Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
-                var initialPageHtml = await client.DownloadStringTaskAsync(initialPageUrl);
+                var response = await httpClient.GetAsync(initialPageUrl);
+                response.EnsureSuccessStatusCode();
+                var initialPageHtml = await response.Content.ReadAsStringAsync();
 
                 // Parse the response and create the login headers
                 Log.Debug("Parsing HTML response");
+                var pageHtml = new HtmlDocument();
                 pageHtml.LoadHtml(initialPageHtml);
+
                 // We need all the hidden ASP.NET state/event values. Grab everything that starts with double underscores just to make sure we get everything
-                pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")).ToList().ForEach(i => loginData.Add(i.Id, i.GetAttributeValue("value", string.Empty)));
-                loginData.Add("IsFromNewSite", "1"); // Not sure what this does exactly, but it seems necessary to include it
-                loginData.Add("JavaScriptTest", "1"); // Lie and say we support JavaScript
-                loginData.Add("ctl00$ContentPlaceHolder1$loginform$txtUserName", un); // Username
-                loginData.Add("txtPassword", pw.ToString()); // Password
+                var formData = new MultipartFormDataContent();
+                foreach (var item in pageHtml.DocumentNode.Descendants("input").Where(i => i.Id.StartsWith("__")))
+                {
+                    formData.Add(new StringContent(item.GetAttributeValue("value", string.Empty)), item.Id);
+                }
+                formData.Add(new StringContent("1"), "IsFromNewSite"); // Not sure what this does exactly, but it seems necessary to include it
+                formData.Add(new StringContent("1"), "JavaScriptTest"); // Lie and say we support JavaScript
+                formData.Add(new StringContent(un), "ctl00$ContentPlaceHolder1$loginform$txtUserName"); // Username
+                formData.Add(new StringContent(pw.ToString()), "txtPassword"); // Password
 
                 // Submit the login form
                 Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
-                client.Headers.Set(HttpRequestHeader.Referer, initialPageUrl);
-                await client.UploadValuesTaskAsync(loginFormUrl, loginData);
+                response = await httpClient.PostAsync(loginFormUrl, formData);
+                response.EnsureSuccessStatusCode();
 
                 // Check the login status
-                var loggedIn = client.CookieContainer.GetCookies(new Uri(rootUrl))["loggedInAsSubscriber"]?.Value;
+                var loggedIn = cookieContainer.GetCookies(new Uri(rootUrl))["loggedInAsSubscriber"]?.Value;
                 Log.Debug("loggedInAsSubscriber = {LoggedIn}", loggedIn);
 
                 if ((loggedIn != null) && loggedIn.Equals("1"))
@@ -93,7 +98,7 @@ namespace AlarmDotCom
                     Log.Error("Login failed");
                 }
             }
-            catch (Exception e)
+            catch (HttpRequestException e)
             {
                 Log.Error(e, "Login failed");
             }
