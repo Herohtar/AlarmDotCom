@@ -1,4 +1,4 @@
-using AlarmDotCom.JsonObjects;
+﻿using AlarmDotCom.JsonObjects;
 using AlarmDotCom.JsonObjects.AvailableSystemItems;
 using AlarmDotCom.JsonObjects.Systems;
 using AlarmDotCom.JsonObjects.TemperatureSensorInfo;
@@ -57,9 +57,9 @@ namespace AlarmDotCom
             {
                 // Load the first page in order to pull the ASP states/keys so our login request looks legit
                 Log.Debug("Loading initial page {InitialPage}", initialPageUrl);
-                var response = await httpClient.GetAsync(initialPageUrl);
+                var response = await httpClient.GetAsync(initialPageUrl).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
-                var initialPageHtml = await response.Content.ReadAsStringAsync();
+                var initialPageHtml = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 // Parse the response and create the login headers
                 Log.Debug("Parsing HTML response");
@@ -79,7 +79,7 @@ namespace AlarmDotCom
 
                 // Submit the login form
                 Log.Debug("Submitting login form {LoginUrl}", loginFormUrl);
-                response = await httpClient.PostAsync(loginFormUrl, formData);
+                response = await httpClient.PostAsync(loginFormUrl, formData).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
 
                 // Check the login status
@@ -113,8 +113,8 @@ namespace AlarmDotCom
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
                 // The Alarm.com web interface does this with an empty POST, but it seems to work using GET, and makes more sense that way
-                var response = await httpClient.GetAsync($"{keepAliveUrl}?timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
-                var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync());
+                var response = await httpClient.GetAsync($"{keepAliveUrl}?timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}").ConfigureAwait(false);
+                var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                 status = result.Status;
                 if (status == KeepAliveResult.Success)
                 {
@@ -148,15 +148,15 @@ namespace AlarmDotCom
                 }
                 request.Headers.Accept.ParseAdd("application/vnd.api+json");
 
-                var response = await httpClient.SendAsync(request);
+                var response = await httpClient.SendAsync(request).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    json = await response.Content.ReadAsStringAsync();
+                    json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     Log.Debug("Got {Data}", json);
                 }
                 else
                 {
-                    var errorData = await response.Content.ReadAsStringAsync();
+                    var errorData = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     Log.Error("Request failed: {ErrorData}", errorData);
                 }
             }
@@ -172,7 +172,7 @@ namespace AlarmDotCom
         {
             Log.Information("Getting available system items");
 
-            var json = await getJsonData(availableSystemItemsUrl);
+            var json = await getJsonData(availableSystemItemsUrl).ConfigureAwait(false);
 
             var availableSystemItems = AvailableSystemItems.FromJson(json);
 
@@ -186,7 +186,7 @@ namespace AlarmDotCom
 
             var requestUrl = systemsUrl + systemItem.Id;
 
-            var json = await getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl).ConfigureAwait(false);
 
             var system = Systems.FromJson(json);
 
@@ -200,7 +200,7 @@ namespace AlarmDotCom
 
             var requestUrl = thermostatsUrl + thermostatId;
 
-            var json = await getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl).ConfigureAwait(false);
 
             var thermostat = ThermostatInfo.FromJson(json);
 
@@ -214,7 +214,7 @@ namespace AlarmDotCom
 
             var requestUrl = temperatureSensorsUrl + temperatureSensorId;
 
-            var json = await getJsonData(requestUrl);
+            var json = await getJsonData(requestUrl).ConfigureAwait(false);
 
             var temperatureSensor = TemperatureSensorInfo.FromJson(json);
 
