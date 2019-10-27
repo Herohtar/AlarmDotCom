@@ -104,11 +104,11 @@ namespace AlarmDotCom
             return success;
         }
 
-        public async Task<KeepAliveResult> KeepAlive()
+        public async Task<KeepAliveStatus> KeepAlive()
         {
             Log.Information("Sending keepalive");
 
-            var status = KeepAliveResult.Unknown;
+            var status = KeepAliveStatus.Unknown;
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
@@ -116,7 +116,7 @@ namespace AlarmDotCom
                 var response = await httpClient.GetAsync($"{keepAliveUrl}?timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}").ConfigureAwait(false);
                 var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                 status = result.Status;
-                if (status == KeepAliveResult.Success)
+                if (status == KeepAliveStatus.Success)
                 {
                     Log.Debug("Keepalive successful");
                 }

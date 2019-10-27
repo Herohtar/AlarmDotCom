@@ -1,6 +1,6 @@
 namespace AlarmDotCom
 {
-    public enum KeepAliveResult
+    public enum KeepAliveStatus
     {
         Success,
         SessionExpired,

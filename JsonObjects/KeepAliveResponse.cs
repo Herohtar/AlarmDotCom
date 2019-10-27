@@ -6,12 +6,12 @@ namespace AlarmDotCom.JsonObjects
     public class KeepAliveResponse
     {
         [JsonPropertyName("status")]
-        public KeepAliveResult Status { get; set; }
+        public KeepAliveStatus Status { get; set; }
 
         public static KeepAliveResponse FromJson(string json)
         {
             var options = new JsonSerializerOptions();
-            options.Converters.Add(new KeepAliveResultConverter());
+            options.Converters.Add(new KeepAliveStatusConverter());
 
             return JsonSerializer.Deserialize<KeepAliveResponse>(json, options);
         }

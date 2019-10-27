@@ -4,24 +4,24 @@ using System.Text.Json.Serialization;
 
 namespace AlarmDotCom
 {
-    internal class KeepAliveResultConverter : JsonConverter<KeepAliveResult>
+    internal class KeepAliveStatusConverter : JsonConverter<KeepAliveStatus>
     {
-        public override KeepAliveResult Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override KeepAliveStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var value = reader.GetString();
             if (value.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
             {
-                return KeepAliveResult.Success;
+                return KeepAliveStatus.Success;
             }
             else if (value.Equals("Session Expired", StringComparison.OrdinalIgnoreCase))
             {
-                return KeepAliveResult.SessionExpired;
+                return KeepAliveStatus.SessionExpired;
             }
 
-            return KeepAliveResult.Error;
+            return KeepAliveStatus.Error;
         }
 
-        public override void Write(Utf8JsonWriter writer, KeepAliveResult value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, KeepAliveStatus value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }
