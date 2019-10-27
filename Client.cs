@@ -104,25 +104,25 @@ namespace AlarmDotCom
             return success;
         }
 
-        public async Task<bool> KeepAlive()
+        public async Task<KeepAliveResult> KeepAlive()
         {
             Log.Information("Sending keepalive");
 
-            var success = false;
+            var status = KeepAliveResult.Unknown;
             try
             {
                 Log.Debug("Posting keepalive to {KeepAliveUrl}", keepAliveUrl);
                 // The Alarm.com web interface does this with an empty POST, but it seems to work using GET, and makes more sense that way
                 var response = await httpClient.GetAsync($"{keepAliveUrl}?timestamp={DateTimeOffset.Now.ToUnixTimeMilliseconds()}");
                 var result = KeepAliveResponse.FromJson(await response.Content.ReadAsStringAsync());
-                if (result.Status.Equals("Keep Alive", StringComparison.OrdinalIgnoreCase))
+                status = result.Status;
+                if (status == KeepAliveResult.Success)
                 {
-                    success = true;
                     Log.Debug("Keepalive successful");
                 }
                 else
                 {
-                    Log.Error("Keepalive failed: {Status}", result.Status);
+                    Log.Error("Keepalive failed: {Status}", status);
                 }
             }
             catch (HttpRequestException e)
@@ -130,7 +130,7 @@ namespace AlarmDotCom
                 Log.Error(e, "Keepalive failed");
             }
 
-            return success;
+            return status;
         }
 
         private async Task<string> getJsonData(string requestUrl)
